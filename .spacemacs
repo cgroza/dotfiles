@@ -252,7 +252,7 @@ layers configuration."
  '(company-ghc-show-info t)
  '(org-agenda-files
    (quote
-    ("~/University/DraftSchedule.org" "~/University/BiochemNotes.org" "~/University/Webcredentials.org" "~/org/notes.org" "~/TODO.org")))
+    ("~/.emacs.d/doc/DOCUMENTATION.org" "~/.emacs.d/doc/FAQ.org" "~/University/BiochemNotes.org" "~/TODO.org" "~/org/notes.org" "~/University/Webcredentials.org" "~/University/DraftSchedule.org")))
  '(org-hide-emphasis-markers t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
