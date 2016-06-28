@@ -17,10 +17,12 @@
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     apt
      auto-completion
      better-defaults
      emacs-lisp
      pdf-tools
+     (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
      (git :variables)
      haskell
      c-c++
@@ -84,10 +86,10 @@ before layers configuration."
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
+                               :size 10
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.0)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The leader key accessible in `emacs state' and `insert state'
@@ -155,6 +157,7 @@ before layers configuration."
    dotspacemacs-default-package-repository nil
    )
   ;; User initialization goes here
+  (push "~/elisp" load-path)
   )
 
 ;; Escaping smartparens
@@ -162,7 +165,7 @@ before layers configuration."
 (defun smartparens-temp-disable ()
   (interactive)
   (when smartparens-mode
-    (smartparens-mode -1)
+    (smartparens-mode nil)
     (setq smartparens-temp-disabled t)))
 (defun smartparens-maybe-reenable ()
   (when smartparens-temp-disabled
@@ -173,6 +176,8 @@ before layers configuration."
   "Configuration function.
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
+  ;; golden ratio for autosizing buffers
+  (golden-ratio t)
   ;; langtool
   (require 'langtool)
   (setq langtool-language-tool-jar "~/LanguageTool-3.3/languagetool-commandline.jar")
@@ -234,7 +239,7 @@ layers configuration."
   ;;      (sp-pair "[" nil :actions :rem)
   ;;      (sp-pair "'" nil :actions :rem)
   ;;      (sp-pair "\"" nil :actions :rem)))
-  (show-paren-mode 1)
+  (show-paren-mode t)
   (define-key evil-insert-state-map (kbd "M-p") 'smartparens-temp-disable)
   (add-hook 'post-self-insert-hook 'smartparens-maybe-reenable t)
   )
@@ -252,7 +257,7 @@ layers configuration."
  '(company-ghc-show-info t)
  '(org-agenda-files
    (quote
-    ("~/.emacs.d/doc/DOCUMENTATION.org" "~/.emacs.d/doc/FAQ.org" "~/University/BiochemNotes.org" "~/TODO.org" "~/org/notes.org" "~/University/Webcredentials.org" "~/University/DraftSchedule.org")))
+    ("~/University/BiochemNotes.org" "~/.emacs.d/doc/DOCUMENTATION.org" "~/.emacs.d/doc/FAQ.org" "~/University/DraftSchedule.org" "~/.emacs.d/doc/LAYERS.org" "~/org/notes.org" "~/TODO.org" "~/.emacs.d/layers/+vim/evil-snipe/README.org" "~/University/Webcredentials.org" "/mnt/Storage/Projects/Git_Repos/Emacs-apt/README.org")))
  '(org-hide-emphasis-markers t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
