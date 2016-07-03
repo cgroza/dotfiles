@@ -1,0 +1,73 @@
+Golden ratio for autosizing buffers.
+#+BEGIN_SRC emacs-lisp
+  (golden-ratio-mode t)
+#+END_SRC
+Langtool for grammar checking.
+#+BEGIN_SRC emacs-lisp
+  (require 'langtool)
+  (setq langtool-language-tool-jar "~/LanguageTool-3.3/languagetool-commandline.jar")
+  (spacemacs/set-leader-keys "olb" 'langtool-check-buffer)
+  (spacemacs/set-leader-keys "ola" 'langtool-check)
+  (spacemacs/set-leader-keys "olc" 'langtool-correct-buffer)
+  (spacemacs/set-leader-keys "old" 'langtool-check-done)
+  (spacemacs/set-leader-keys "olm" 'langtool-show-message-at-point)
+  (spacemacs/set-leader-keys "olp" 'langtool-goto-next-error)
+  (spacemacs/set-leader-keys "oln" 'langtool-goto-previous-error)
+  (spacemacs/set-leader-keys "oll" 'langtool-switch-default-language)
+#+END_SRC
+C# omnisharp server path.
+#+BEGIN_SRC emacs-lisp
+  (setq omnisharp-server-executable-path "/home/cgroza/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")
+#+END_SRC
+Cabal path for Haskell.
+#+BEGIN_SRC emacs-lisp
+  (let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
+    (setenv "PATH" (concat my-cabal-path ":" (getenv "PATH")))
+    (add-to-list 'exec-path my-cabal-path))
+#+END_SRC
+Relative line numbers.
+#+BEGIN_SRC emacs-lisp
+  (require 'linum-relative)
+  (global-linum-mode)
+  (linum-relative-on)
+#+END_SRC
+Custom keybindings.
+#+BEGIN_SRC  emacs-lisp
+  (spacemacs/set-leader-keys "oif" 'ido-insert-file)
+  (spacemacs/set-leader-keys "oib" 'ido-insert-buffer)
+  (spacemacs/set-leader-keys "odl" 'delete-blank-lines)
+#+END_SRC
+Org configuration.
+#+BEGIN_SRC emacs-lisp
+  (require 'ob-python)
+  (setq org-src-fontify-natively t)
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "WAITING(w)" "DOING(d)" "|" "DONE(D)")))
+  (add-hook 'org-mode-hook 'org-agenda-file-to-front)
+#+END_SRC
+Text mode hooks.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'text-mode-hook 'auto-fill-mode)
+  (add-hook 'text-mode-hook (lambda () (setq line-spacing 0.5)))
+#+END_SRC
+Smart parens configuration.
+#+BEGIN_SRC emacs-lisp
+  (defvar-local smartparens-temp-disabled nil)
+  (defun smartparens-temp-disable ()
+    (interactive)
+    (when smartparens-mode
+      (smartparens-mode nil)
+      (setq smartparens-temp-disabled t)))
+  (defun smartparens-maybe-reenable ()
+    (when smartparens-temp-disabled
+      (smartparens-mode)
+      (setq smartparens-temp-disabled nil)))
+  (smartparens-global-mode)
+  (show-paren-mode t)
+  (define-key evil-insert-state-map (kbd "M-p") 'smartparens-temp-disable)
+  (add-hook 'post-self-insert-hook 'smartparens-maybe-reenable t)
+#+END_SRC
+Gnus.
+#+BEGIN_SRC emacs-lisp
+  (setq gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+#+END_SRC

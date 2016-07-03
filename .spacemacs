@@ -86,7 +86,7 @@ before layers configuration."
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 10
+                               :size 12
                                :weight normal
                                :width normal
                                :powerline-scale 1.0)
@@ -154,100 +154,17 @@ before layers configuration."
    ;; The default package repository used if no explicit repository has been
    ;; specified with an installed package.
    ;; Not used for now.
-   dotspacemacs-default-package-repository nil
-   )
+   dotspacemacs-default-package-repository nil)
   ;; User initialization goes here
-  (push "~/elisp" load-path)
-  )
+  (push "~/elisp" load-path))
 
 ;; Escaping smartparens
-(defvar-local smartparens-temp-disabled nil)
-(defun smartparens-temp-disable ()
-  (interactive)
-  (when smartparens-mode
-    (smartparens-mode nil)
-    (setq smartparens-temp-disabled t)))
-(defun smartparens-maybe-reenable ()
-  (when smartparens-temp-disabled
-    (smartparens-mode)
-    (setq smartparens-temp-disabled nil)))
 
 (defun dotspacemacs/user-config ()
   "Configuration function.
- This function is called at the very end of Spacemacs initialization after
+ This function is calleat the very end of Spacemacs initialization after
 layers configuration."
-  ;; golden ratio for autosizing buffers
-  (golden-ratio t)
-  ;; langtool
-  (require 'langtool)
-  (setq langtool-language-tool-jar "~/LanguageTool-3.3/languagetool-commandline.jar")
-  ;; org mode python support
-  (require 'ob-python)
-  ;; global smart parens
-  (smartparens-global-mode)
-
-
-  (setq omnisharp-server-executable-path "/home/cgroza/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")
-  ;; Haskell mode
-  (let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
-    (setenv "PATH" (concat my-cabal-path ":" (getenv "PATH")))
-    (add-to-list 'exec-path my-cabal-path))
-
-  ;; Auto completion for Haskell
-  (require 'company)
-  (add-hook 'haskell-mode-hook 'company-mode)
-  (autoload 'ghc-init "ghc" nil t)
-  (autoload 'ghc-debug "ghc" nil t)
-  (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
-  (add-hook 'interactive-haskell-mode-hook 'ac-haskell-process-setup)
-  (add-hook 'haskell-interactive-mode-hook 'ac-haskell-process-setup)
-  (eval-after-load "auto-complete"
-    '(add-to-list 'ac-modes 'haskell-interactive-mode))
-  (add-to-list 'company-backends 'company-ghc)
-  (custom-set-variables '(company-ghc-show-info t))
-
-  ;; Line numbers
-  (require 'linum-relative)
-  (global-linum-mode)
-  (linum-relative-on)
-
-  ;; Inserting files
-  (spacemacs/set-leader-keys "oif" 'ido-insert-file)
-  (spacemacs/set-leader-keys "oib" 'ido-insert-buffer)
-  (spacemacs/set-leader-keys "odl" 'delete-blank-lines)
-  ;; langtool bindings
-  (spacemacs/set-leader-keys "olb" 'langtool-check-buffer)
-  (spacemacs/set-leader-keys "ola" 'langtool-check)
-  (spacemacs/set-leader-keys "olc" 'langtool-correct-buffer)
-  (spacemacs/set-leader-keys "old" 'langtool-check-done)
-  (spacemacs/set-leader-keys "olm" 'langtool-show-message-at-point)
-  (spacemacs/set-leader-keys "olp" 'langtool-goto-next-error)
-  (spacemacs/set-leader-keys "oln" 'langtool-goto-previous-error)
-  (spacemacs/set-leader-keys "oll" 'langtool-switch-default-language)
-  ;; Org-mode
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "WAITING(w)" "DOING(d)" "|" "DONE(D)")))
-  (add-hook 'org-mode-hook 'org-agenda-file-to-front)
-  (set-input-method 'latin-prefix)
-
-  (add-hook 'text-mode-hook (lambda () (setq line-spacing 0.5)))
-
-  ;; Parenthesis
-  ;; (eval-after-load 'smartparens
-  ;;   '(progn
-  ;;      (sp-pair "(" nil :actions :rem)
-  ;;      (sp-pair "[" nil :actions :rem)
-  ;;      (sp-pair "'" nil :actions :rem)
-  ;;      (sp-pair "\"" nil :actions :rem)))
-  (show-paren-mode t)
-  (define-key evil-insert-state-map (kbd "M-p") 'smartparens-temp-disable)
-  (add-hook 'post-self-insert-hook 'smartparens-maybe-reenable t)
-  )
-
-;; Make Gnus NOT ignore [Gmail] mailboxes
-(setq gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
-;; Do not write anything past this comment. This is where Emacs will
-;; auto-generate custom variable definitions.
+  (org-babel-load-file (expand-file-name "~/dotfiles/emacsconfig.org")))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -257,8 +174,9 @@ layers configuration."
  '(company-ghc-show-info t)
  '(org-agenda-files
    (quote
-    ("~/University/BiochemNotes.org" "~/.emacs.d/doc/DOCUMENTATION.org" "~/.emacs.d/doc/FAQ.org" "~/University/DraftSchedule.org" "~/.emacs.d/doc/LAYERS.org" "~/org/notes.org" "~/TODO.org" "~/.emacs.d/layers/+vim/evil-snipe/README.org" "~/University/Webcredentials.org" "/mnt/Storage/Projects/Git_Repos/Emacs-apt/README.org")))
+    ("~/dotfiles/emacsconfig.org" "~/tests/test.org" "~/.emacs.d/doc/DOCUMENTATION.org" "~/.emacs.d/doc/FAQ.org" "~/University/BiochemNotes.org" "~/University/DraftSchedule.org" "~/.emacs.d/doc/LAYERS.org" "~/org/notes.org" "~/TODO.org" "~/.emacs.d/layers/+vim/evil-snipe/README.org" "~/University/Webcredentials.org" "/mnt/Storage/Projects/Git_Repos/Emacs-apt/README.org")))
  '(org-hide-emphasis-markers t))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
