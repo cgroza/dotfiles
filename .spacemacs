@@ -21,6 +21,7 @@
      auto-completion
      better-defaults
      emacs-lisp
+     ess
      pdf-tools
      (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
      (git :variables)
@@ -45,7 +46,7 @@
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/config'.
-   dotspacemacs-additional-packages '(w3m org-pdfview langtool company-ghc ghc ac-haskell-process)
+   dotspacemacs-additional-packages '(pdf-tools w3m org-pdfview langtool)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(evil-search-highlight-persist)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -86,7 +87,7 @@ before layers configuration."
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 12
+                               :size 15
                                :weight normal
                                :width normal
                                :powerline-scale 1.0)
@@ -158,8 +159,6 @@ before layers configuration."
   ;; User initialization goes here
   (push "~/elisp" load-path))
 
-;; Escaping smartparens
-
 (defun dotspacemacs/user-config ()
   "Configuration function.
  This function is calleat the very end of Spacemacs initialization after
@@ -174,7 +173,7 @@ layers configuration."
  '(company-ghc-show-info t)
  '(org-agenda-files
    (quote
-    ("~/dotfiles/emacsconfig.org" "~/tests/test.org" "~/.emacs.d/doc/DOCUMENTATION.org" "~/.emacs.d/doc/FAQ.org" "~/University/BiochemNotes.org" "~/University/DraftSchedule.org" "~/.emacs.d/doc/LAYERS.org" "~/org/notes.org" "~/TODO.org" "~/.emacs.d/layers/+vim/evil-snipe/README.org" "~/University/Webcredentials.org" "/mnt/Storage/Projects/Git_Repos/Emacs-apt/README.org")))
+    ("~/dotfiles/emacsconfig.org" "~/TODO.org" "~/Dropbox/University/BiochemNotes.org" "~/Dropbox/University/DraftSchedule.org" "~/Dropbox/University/Webcredentials.org" "~/University/Webcredentials.org" "~/.emacs.d/CHANGELOG.org" "~/tests/tests.org" "~/tests/test.org" "~/.emacs.d/doc/DOCUMENTATION.org" "~/.emacs.d/doc/FAQ.org" "~/University/BiochemNotes.org" "~/University/DraftSchedule.org" "~/.emacs.d/doc/LAYERS.org" "~/org/notes.org" "~/.emacs.d/layers/+vim/evil-snipe/README.org" "/mnt/Storage/Projects/Git_Repos/Emacs-apt/README.org")))
  '(org-hide-emphasis-markers t))
 
 (custom-set-faces

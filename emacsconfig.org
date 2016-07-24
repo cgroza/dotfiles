@@ -1,25 +1,59 @@
-Golden ratio for autosizing buffers.
+Golden ratio mode for resizing buffers to comfortable dimensions.
 #+BEGIN_SRC emacs-lisp
   (golden-ratio-mode t)
 #+END_SRC
-Langtool for grammar checking.
+Langtool path for grammar checking and its keybindings.
 #+BEGIN_SRC emacs-lisp
-  (require 'langtool)
-  (setq langtool-language-tool-jar "~/LanguageTool-3.3/languagetool-commandline.jar")
-  (spacemacs/set-leader-keys "olb" 'langtool-check-buffer)
-  (spacemacs/set-leader-keys "ola" 'langtool-check)
-  (spacemacs/set-leader-keys "olc" 'langtool-correct-buffer)
-  (spacemacs/set-leader-keys "old" 'langtool-check-done)
-  (spacemacs/set-leader-keys "olm" 'langtool-show-message-at-point)
-  (spacemacs/set-leader-keys "olp" 'langtool-goto-next-error)
-  (spacemacs/set-leader-keys "oln" 'langtool-goto-previous-error)
-  (spacemacs/set-leader-keys "oll" 'langtool-switch-default-language)
+  (use-package langtool
+    :config
+    ;; executable path
+    (setq langtool-language-tool-jar "~/LanguageTool-3.3/languagetool-commandline.jar")
+    ;; keybindings
+    (spacemacs/set-leader-keys
+      "olb" 'langtool-check-buffer
+      "ola" 'langtool-check
+      "olc" 'langtool-correct-buffer
+      "old" 'langtool-check-done
+      "olm" 'langtool-show-message-at-point
+      "olp" 'langtool-goto-next-error
+      "oln" 'langtool-goto-previous-error
+      "oll" 'langtool-switch-default-language))
 #+END_SRC
-C# omnisharp server path.
+Emacs apt keybindings.
+#+BEGIN_SRC emacs-lisp
+  (use-package emacs-apt
+    :config
+    (spacemacs/set-leader-keys
+      "oaD" 'apt-download
+      "oaS" 'apt-source
+      "oaU" 'apt-update
+      "oaa" 'apt-autoremove
+      "oac" 'apt-changelog
+      "oad" 'apt-depends
+      "oai" 'apt-install
+      "oap" 'apt-purge
+      "oaP" 'apt-showpkg
+      "oap" 'apt-showpkg
+      "oaR" 'apt-showrc
+      "oar" 'apt-remove
+      "oas" 'apt-search
+      "oat" 'apt-stats
+      "oag" 'apt-dump
+      "oaG" 'apt-dumpavail
+      "oae" 'apt-rdepends
+      "oan" 'apt-pkgnames
+      "oao" 'apt-dotty
+      "oax" 'apt-xvcg
+      "oam" 'apt-madison
+      "oal" 'apt-policy
+      "oau" 'apt-upgrade))
+#+END_SRC
+C# omnisharp server path for IDE features. Unfortunately, it requires solution
+files.
 #+BEGIN_SRC emacs-lisp
   (setq omnisharp-server-executable-path "/home/cgroza/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")
 #+END_SRC
-Cabal path for Haskell.
+Cabal load path for Haskell binaries and libraries.
 #+BEGIN_SRC emacs-lisp
   (let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
     (setenv "PATH" (concat my-cabal-path ":" (getenv "PATH")))
@@ -27,47 +61,70 @@ Cabal path for Haskell.
 #+END_SRC
 Relative line numbers.
 #+BEGIN_SRC emacs-lisp
-  (require 'linum-relative)
-  (global-linum-mode)
-  (linum-relative-on)
+  (use-package linum-relative
+    :config
+    (global-linum-mode)
+    (linum-relative-on))
 #+END_SRC
-Custom keybindings.
+Custom keybindings for inserting files and deleting lines.
 #+BEGIN_SRC  emacs-lisp
-  (spacemacs/set-leader-keys "oif" 'ido-insert-file)
-  (spacemacs/set-leader-keys "oib" 'ido-insert-buffer)
-  (spacemacs/set-leader-keys "odl" 'delete-blank-lines)
+  (spacemacs/set-leader-keys
+    "oif" 'ido-insert-file
+    "oib" 'ido-insert-buffer
+    "odl" 'delete-blank-lines)
 #+END_SRC
-Org configuration.
+Org configuration for language support, keywords, agenda and custom functions.
 #+BEGIN_SRC emacs-lisp
-  (require 'ob-python)
+  ;; python org mode support
+  (use-package ob-python)
   (setq org-src-fontify-natively t)
   (setq org-todo-keywords
         '((sequence "TODO(t)" "WAITING(w)" "DOING(d)" "|" "DONE(D)")))
   (add-hook 'org-mode-hook 'org-agenda-file-to-front)
+  ;; miscellaneous utilities
+  (use-package org-block-surround
+    :config
+    (spacemacs/set-leader-keys "oos" 'org-block-surround-region))
 #+END_SRC
-Text mode hooks.
+Text mode hooks for word processing.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'text-mode-hook 'auto-fill-mode)
   (add-hook 'text-mode-hook (lambda () (setq line-spacing 0.5)))
 #+END_SRC
 Smart parens configuration.
 #+BEGIN_SRC emacs-lisp
-  (defvar-local smartparens-temp-disabled nil)
-  (defun smartparens-temp-disable ()
-    (interactive)
-    (when smartparens-mode
-      (smartparens-mode nil)
-      (setq smartparens-temp-disabled t)))
-  (defun smartparens-maybe-reenable ()
-    (when smartparens-temp-disabled
-      (smartparens-mode)
-      (setq smartparens-temp-disabled nil)))
   (smartparens-global-mode)
   (show-paren-mode t)
-  (define-key evil-insert-state-map (kbd "M-p") 'smartparens-temp-disable)
-  (add-hook 'post-self-insert-hook 'smartparens-maybe-reenable t)
 #+END_SRC
-Gnus.
+Gnus for mail.
 #+BEGIN_SRC emacs-lisp
   (setq gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+#+END_SRC
+Custom latex utilities.
+#+BEGIN_SRC emacs-lisp
+  (use-package latex-pages)
+#+END_SRC
+Text display settings such as global visual line and fringe mode.
+#+BEGIN_SRC emacs-lisp
+  (global-visual-line-mode t)
+  (set-fringe-mode '(1 . 1))
+#+END_SRC
+Pdf-tools and latex.
+#+BEGIN_SRC emacs-lisp
+(when (eq system-type 'gnu/linux)
+  (use-package pdf-tools
+    :ensure t
+    :config
+    (pdf-tools-install)
+    (setq TeX-view-program-selection '((output-pdf "pdf-tools")))
+    (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))))
+
+  (defun th/pdf-view-revert-buffer-maybe (file)
+    (let ((buf (find-buffer-visiting file)))
+      (when buf 
+        (with-current-buffer buf
+          (when (derived-mode-p 'pdf-view-mode)
+            (pdf-view-revert-buffer nil t))))))
+  (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
+            #'th/pdf-view-revert-buffer-maybe)
 #+END_SRC
