@@ -307,7 +307,7 @@ same directory as the org-buffer and insert a link to this file."
            (concat (buffer-file-name)
                    "_"
                    (format-time-string "%Y%m%d_%H%M%S_")) ) ".png")))
-    (call-process "scrot" nil nil nil "-s" filename)
+    (call-process "import" nil nil nil filename)
     (insert (concat "[[" filename "]]"))
     (org-display-inline-images)))
 
@@ -318,10 +318,9 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  (setq org-agenda-files '("~/Dropbox/Org/TODO.org"))
   (golden-ratio t)
-  (yas/global-mode nil)
-  (evil-leader/set-key-for-mode 'org-mode "C-s" 'my-org-screenshot)
-  )
+  (evil-leader/set-key-for-mode 'org-mode "C-s" 'my-org-screenshot))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
