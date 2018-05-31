@@ -41,7 +41,7 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ivy
+     helm
      latex
      pdf-tools
      auto-completion
@@ -300,7 +300,6 @@ values."
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
-   org-ref-completion-library 'org-ref-ivy-cite
    org-ref-default-bibliography '("~/Dropbox/Bib/cgroza.bib")
    ))
 
