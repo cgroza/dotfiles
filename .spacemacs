@@ -304,6 +304,7 @@ values."
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
    org-ref-default-bibliography '("~/Dropbox/Bib/cgroza.bib")
+   org-enable-reveal-js-support t
    ))
 
 (defun dotspacemacs/user-init ()
