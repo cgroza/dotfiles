@@ -50,7 +50,7 @@ values."
      emacs-lisp
      git
      markdown
-     org
+     (org :variables org-enable-reveal-js-support t)
      ess
      scala
      (shell :variables
@@ -305,7 +305,6 @@ values."
    dotspacemacs-auto-resume-layouts t
    dotspacemacs-whitespace-cleanup nil
    org-ref-default-bibliography '("~/Dropbox/Bib/cgroza.bib")
-   org-enable-reveal-js-support t
    ))
 
 (defun dotspacemacs/user-init ()
