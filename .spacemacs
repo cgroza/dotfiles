@@ -312,18 +312,18 @@ values."
    org-capture-templates (quote (
                                  ("t" "Todo quote" entry
                                   (file+headline "notes.org" "Tasks")
-                                  "* TODO %?
+                                  "* TODO %? %^G
  %i
 ")
                                  ("o" "Todo file"  entry
                                   (file+headline "notes.org" "Tasks")
-                                  "* TODO %?
+                                  "* TODO %? %^G
  - %l
 
  %i")
                                  ("O" "Todo web"  entry
                                   (file+headline "notes.org" "Tasks")
-                                  "* TODO %?
+                                  "* TODO %? %^G
  - %x
 ")
                                  ("l" "Web Link" plain
