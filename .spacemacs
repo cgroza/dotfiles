@@ -310,23 +310,43 @@ values."
    org-default-notes-file "notes.org"
    org-agenda-files '("~/Dropbox/Org/notes.org")
    org-capture-templates (quote (
-                                 ("t" "Todo quote" entry
-                                  (file+headline "notes.org" "Tasks")
-                                  "* TODO %? %^G
+                                 ("n" "Notes")
+                                 ("nq" "Note quote" entry
+                                  (file+headline "notes.org" "Notes")
+                                  "* %? %^G
  %i
 ")
-                                 ("o" "Todo file"  entry
+                                 ("nf" "Note file"  entry
+                                  (file+headline "notes.org" "Notes")
+                                  "* %? %^G
+ - %l
+
+ %i")
+                                 ("nw" "Note web"  entry
+                                  (file+headline "notes.org" "Notes")
+                                  "* %? %^G
+ - %x
+")
+                                 ("t" "Todo")
+                                 ("tq" "Todo quote" entry
+                                  (file+headline "notes.org" "Tasks")
+                                  "* %? %^G
+ %i
+")
+                                 ("tf" "Todo file"  entry
                                   (file+headline "notes.org" "Tasks")
                                   "* TODO %? %^G
  - %l
 
  %i")
-                                 ("O" "Todo web"  entry
+                                 ("tw" "Todo web"  entry
                                   (file+headline "notes.org" "Tasks")
                                   "* TODO %? %^G
  - %x
 ")
-                                 ("l" "Web Link" plain
+
+                                 ("l" "Links")
+                                 ("lc" "Link clipboard" plain
                                   (file+headline "notes.org" "Links")
                                   "- %? %x ")
                                  )
