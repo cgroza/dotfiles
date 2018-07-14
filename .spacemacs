@@ -50,7 +50,7 @@ values."
      emacs-lisp
      git
      markdown
-     org
+     (org :variables org-enable-reveal-js-support t)
      ess
      scala
      (shell :variables
