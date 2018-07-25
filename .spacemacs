@@ -313,35 +313,35 @@ values."
                                  ("n" "Notes")
                                  ("nq" "Note quote" entry
                                   (file+headline "notes.org" "Notes")
-                                  "* %? %^G
+                                  "* %?
  %i
 ")
                                  ("nf" "Note file"  entry
                                   (file+headline "notes.org" "Notes")
-                                  "* %? %^G
+                                  "* %?
  - %l
 
  %i")
                                  ("nw" "Note web"  entry
                                   (file+headline "notes.org" "Notes")
-                                  "* %? %^G
+                                  "* %?
  - %x
 ")
                                  ("t" "Todo")
                                  ("tq" "Todo quote" entry
                                   (file+headline "notes.org" "Tasks")
-                                  "* %? %^G
+                                  "* %?
  %i
 ")
                                  ("tf" "Todo file"  entry
                                   (file+headline "notes.org" "Tasks")
-                                  "* TODO %? %^G
+                                  "* TODO %?
  - %l
 
  %i")
                                  ("tw" "Todo web"  entry
                                   (file+headline "notes.org" "Tasks")
-                                  "* TODO %? %^G
+                                  "* TODO %?
  - %x
 ")
 
