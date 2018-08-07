@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: R plot SRC block
+# key: Rplot
+# --
+
+#+BEGIN_SRC R :exports results :results value table :session ${1:*R*}
+$0
+#+END_SRC
