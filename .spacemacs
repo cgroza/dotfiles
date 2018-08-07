@@ -378,6 +378,9 @@ you should place your code here."
   ;; to have the buffer refresh after compilation
   (add-hook 'TeX-after-compilation-finished-functions
             #'TeX-revert-document-buffer)
+
+  ;; custom key bindings
+  (define-key evil-insert-state-map (kbd "C-c e") 'yas-expand)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
