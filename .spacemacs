@@ -381,7 +381,17 @@ you should place your code here."
 
   ;; custom key bindings
   (define-key evil-insert-state-map (kbd "C-c e") 'yas-expand)
+  (define-key evil-normal-state-map (kbd "SPC '") 'my-shell)
   )
+
+;; Custom functions
+(defun my-shell ()
+  (interactive)
+  (let ((buffer (generate-new-buffer "*shell*")))
+    (switch-to-buffer buffer)
+    (shell buffer)
+  )
+)
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
