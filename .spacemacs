@@ -381,7 +381,6 @@ you should place your code here."
   ;; custom key bindings
   (define-key evil-insert-state-map (kbd "C-c e") 'yas-expand)
   (define-key evil-normal-state-map (kbd "SPC '") 'my-shell)
-  ;; (evil-leader/set-key-for-mode 'shell-mode "c" 'comint-clear-buffer)
   )
 
 ;; Custom functions
