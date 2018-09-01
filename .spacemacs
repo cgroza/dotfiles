@@ -393,9 +393,7 @@ you should place your code here."
   (interactive)
   (let ((buffer (generate-new-buffer "*shell*")))
     (switch-to-buffer buffer)
-    (shell buffer)
-  )
-)
+    (shell buffer)))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
