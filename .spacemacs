@@ -381,9 +381,14 @@ you should place your code here."
   ;; custom key bindings
   (define-key evil-insert-state-map (kbd "C-c e") 'yas-expand)
   (define-key evil-normal-state-map (kbd "SPC '") 'my-shell)
-  )
+  (global-set-key (kbd "<f5>") 'my-magit-auto-commit))
 
 ;; Custom functions
+(defun my-magit-auto-commit ()
+  (interactive)
+  (magit-stage-modified)
+  (magit-commit))
+
 (defun my-shell ()
   (interactive)
   (let ((buffer (generate-new-buffer "*shell*")))
