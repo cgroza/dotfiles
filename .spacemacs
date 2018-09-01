@@ -329,7 +329,7 @@ values."
                                  ("t" "Todo")
                                  ("tq" "Todo quote" entry
                                   (file+headline "notes.org" "Tasks")
-                                  "* %?
+                                  "* TODO %?
  %i
 ")
                                  ("tf" "Todo file"  entry
