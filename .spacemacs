@@ -382,7 +382,7 @@ you should place your code here."
   (define-key evil-insert-state-map (kbd "C-c e") 'yas-expand)
   (define-key evil-normal-state-map (kbd "SPC '") 'my-shell)
   (global-set-key (kbd "<f5>") 'my-magit-auto-commit)
-  (global-set-key (kbd "<f6>") 'magit-push))
+  (global-set-key (kbd "<f6>") 'magit-push-current-to-pushremote))
 
 ;; Custom functions
 (defun my-magit-auto-commit ()
