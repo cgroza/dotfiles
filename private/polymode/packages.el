@@ -8,9 +8,17 @@
 ;;; Code:
 
 (defconst polymode-packages
-  '(polymode))
+  '(polymode
+    poly-R
+    poly-markdown
+    poly-org
+    poly-web))
 
 (defun polymode/init-polymode ()
+
+  (use-package poly-R)
+  (use-package poly-markdown)
+  (use-package poly-org)
   (use-package polymode
     :mode (("\\.Rmd"   . Rmd-mode))
     :init
@@ -20,9 +28,9 @@
         (interactive)
         (require 'poly-R)
         (require 'poly-markdown)
-        (R-mode)
         (poly-markdown+r-mode))
-      ))
+      )
+    )
   )
 
 ;;; packages.el ends here
