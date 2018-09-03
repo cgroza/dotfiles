@@ -12,7 +12,7 @@
     poly-R
     poly-markdown
     poly-org
-    poly-web))
+    poly-noweb))
 
 (defun polymode/init-polymode ()
 
