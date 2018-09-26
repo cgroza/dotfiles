@@ -307,47 +307,47 @@ values."
    org-ref-default-bibliography '("~/Dropbox/Bib/cgroza.bib")
    evil-want-Y-yank-to-eol nil
    org-directory "~/Dropbox/Org"
-   org-default-notes-file "notes.org"
-   org-agenda-files '("~/Dropbox/Org/notes.org")
+   org-default-notes-file "work.org"
+   org-agenda-files '("~/Dropbox/Org/work.org" "~/Dropbox/Org/school.org" "~/Dropbox/Org/personal.org")
    org-capture-templates (quote (
                                  ("n" "Notes")
                                  ("nq" "Note quote" entry
-                                  (file+headline "notes.org" "Notes")
+                                  (file+headline "personal.org" "Notes")
                                   "* %?
  %i
 ")
                                  ("nf" "Note file"  entry
-                                  (file+headline "notes.org" "Notes")
+                                  (file+headline "personal.org" "Notes")
                                   "* %?
  - %l
 
  %i")
                                  ("nw" "Note web"  entry
-                                  (file+headline "notes.org" "Notes")
+                                  (file+headline "personal.org" "Notes")
                                   "* %?
  - %x
 ")
                                  ("t" "Todo")
                                  ("tq" "Todo quote" entry
-                                  (file+headline "notes.org" "Tasks")
+                                  (file+headline "personal.org" "Tasks")
                                   "* TODO %?
  %i
 ")
                                  ("tf" "Todo file"  entry
-                                  (file+headline "notes.org" "Tasks")
+                                  (file+headline "personal.org" "Tasks")
                                   "* TODO %?
  - %l
 
  %i")
                                  ("tw" "Todo web"  entry
-                                  (file+headline "notes.org" "Tasks")
+                                  (file+headline "personal.org" "Tasks")
                                   "* TODO %?
  - %x
 ")
 
                                  ("l" "Links")
                                  ("lc" "Link clipboard" plain
-                                  (file+headline "notes.org" "Links")
+                                  (file+headline "personal.org" "Links")
                                   "- %? %x ")
                                  )
                                 )
