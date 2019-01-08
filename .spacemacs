@@ -388,6 +388,13 @@ you should place your code here."
   (global-set-key (kbd "<f5>") 'my-magit-auto-commit)
   (global-set-key (kbd "<f6>") 'magit-push-current-to-pushremote)
 
+  ;; file associations
+  (setq auto-mode-alist 
+        (append
+         '(("\\.tut$" . indented-text-mode)  
+           ("\\.req$" . indented-text-mode))
+         auto-mode-alist))
+
   ;; user defined variables
   (setq c-default-style "java"
         org-export-with-drawers nil
