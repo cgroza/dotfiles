@@ -389,15 +389,16 @@ you should place your code here."
   (global-set-key (kbd "<f6>") 'magit-push-current-to-pushremote)
 
   ;; file associations
-  (setq auto-mode-alist 
+  (setq auto-mode-alist
         (append
-         '(("\\.tut$" . indented-text-mode)  
+         '(("\\.tut$" . indented-text-mode)
            ("\\.req$" . indented-text-mode))
          auto-mode-alist))
 
   ;; user defined variables
   (setq c-default-style "java"
         org-export-with-drawers nil
+        python-shell-interpreter "ipython3"
         )
   (add-to-list 'default-frame-alist '(font . "Source Code Pro:pixelsize=12"))
   ;; org babel languages
