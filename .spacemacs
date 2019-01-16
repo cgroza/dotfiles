@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     tutch
      polymode
      themes-megapack
      html
@@ -138,7 +139,10 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(solarized-dark
+   dotspacemacs-themes '(
+                         eziam-light
+                         alect-light
+                         solarized-dark
                          solarized-light
                          spacemacs-dark
                          spacemacs-light)
@@ -391,8 +395,8 @@ you should place your code here."
   ;; file associations
   (setq auto-mode-alist
         (append
-         '(("\\.tut$" . indented-text-mode)
-           ("\\.req$" . indented-text-mode))
+         '(("\\.tut$" . tutch-mode)
+           ("\\.req$" . tutch-mode))
          auto-mode-alist))
 
   ;; user defined variables
