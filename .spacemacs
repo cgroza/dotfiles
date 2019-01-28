@@ -415,6 +415,7 @@ you should place your code here."
                                  (R . t)
                                  (python . t)
                                  (emacs-lisp . t)))
+  (global-hl-line-mode -1)
   )
 
 ;; Custom functions
