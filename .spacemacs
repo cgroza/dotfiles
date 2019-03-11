@@ -419,6 +419,18 @@ you should place your code here."
   )
 
 ;; Custom functions
+
+(defun my-make-analysis-dir ()
+  (interactive)
+  (let ((dir (read-file-name "Analysis directory"))
+        (date (car (split-string (shell-command-to-string "date +%d_%m_%Y") ))))
+    (make-directory (concat dir "_" date))
+    (switch-to-buffer (concat dir ".org"))
+    (save-buffer)
+    )
+  )
+
+
 (defun my-magit-auto-commit ()
   (interactive)
   (magit-stage-modified)
