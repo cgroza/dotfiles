@@ -423,14 +423,17 @@ you should place your code here."
 
 (defun my-make-analysis-dir ()
   (interactive)
-  (let ((dir (read-file-name "Analysis directory"))
-        (date (car (split-string (shell-command-to-string "date +%d_%m_%Y") ))))
-    (make-directory (concat dir "_" date))
-    (switch-to-buffer (concat dir ".org"))
-    (save-buffer)
-    )
-  )
+  (let* ((dir (read-file-name "Analysis directory"))
+         (date (car (split-string (shell-command-to-string "date +%d_%m_%Y") )))
+         (full-path (concat dir "_" date "/"))
+         (file-name (concat full-path
+                            (file-name-nondirectory (directory-file-name (file-name-directory full-path)))
+                            ".org")))
 
+         (make-directory full-path)
+         (switch-to-buffer file-name)
+         (set-visited-file-name file-name)
+))
 
 (defun my-magit-auto-commit ()
   (interactive)
