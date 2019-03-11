@@ -391,6 +391,7 @@ you should place your code here."
   (define-key evil-normal-state-map (kbd "SPC '") 'my-shell)
   (global-set-key (kbd "<f5>") 'my-magit-auto-commit)
   (global-set-key (kbd "<f6>") 'magit-push-current-to-pushremote)
+  (global-set-key (kbd "<f7>") 'my-make-analysis-dir)
 
   ;; file associations
   (setq auto-mode-alist
