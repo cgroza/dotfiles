@@ -45,7 +45,7 @@ values."
      ;; ----------------------------------------------------------------
      helm
      latex
-     pdf
+     pdf-tools
      auto-completion
      better-defaults
      emacs-lisp
@@ -388,7 +388,7 @@ you should place your code here."
   (global-set-key (kbd "<f5>") 'my-magit-auto-commit)
   (global-set-key (kbd "<f6>") 'yas-expand)
   (global-set-key (kbd "<f7>") 'my-make-analysis-dir)
-  (global-set-key (kbd "<f8>") 'treemacs)
+  (global-set-key (kbd "<f8>") 'neotree)
   (global-set-key (kbd "<f9>") 'avy-goto-word-or-subword-1)
 
   ;; file associations
