@@ -32,11 +32,12 @@ values."
    dotspacemacs-configuration-layers
    '(yaml
      tutch
-     ;; polymode
+     polymode
      themes-megapack
      html
      csv
      python
+     ipython-notebook
      bibtex
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -45,7 +46,7 @@ values."
      ;; ----------------------------------------------------------------
      helm
      latex
-     pdf-tools
+     pdf
      auto-completion
      better-defaults
      emacs-lisp
