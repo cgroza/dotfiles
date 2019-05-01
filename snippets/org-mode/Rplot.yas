@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: R plot SRC block
+# key: Rplot
+# --
+
+#+BEGIN_SRC R :exports results :results output graphics :file ${1:plot.pdf} :session ${2:*R*}
+$0
+#+END_SRC

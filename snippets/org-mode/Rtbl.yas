@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: R table SRC block
+# key: Rtbl
+# --
+
+#+BEGIN_SRC R :exports results :results value table :session ${1:*R*}
+$0
+#+END_SRC

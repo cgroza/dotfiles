@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: Beamer double columns block
+# key: columns
+# --
+
+* ${1:Slide Title}
+
+** ${2:Column 1}
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
+
+$0
+
+** ${3: Column 2}
+:PROPERTIES:
+:BEAMER_col: 0.5
+:END:
