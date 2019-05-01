@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: R misc SRC block
-# key: Rmisc
-# --
-
-#+BEGIN_SRC R :exports ${1:none} :results ${2:none} :session ${3:*R*}
-$0
-#+END_SRC
