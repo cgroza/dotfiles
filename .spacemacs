@@ -393,7 +393,9 @@ you should place your code here."
   (global-set-key (kbd "<f8>") 'treemacs)
   (global-set-key (kbd "<f9>") 'avy-goto-word-or-subword-1)
 
+  ;; org src editing window position
   (setq org-src-window-setup 'split-window-below)
+
   ;; file associations
   (setq auto-mode-alist
         (append
@@ -406,7 +408,10 @@ you should place your code here."
         org-export-with-drawers nil
         python-shell-interpreter "ipython3"
         )
+
+  ;; font
   (add-to-list 'default-frame-alist '(font . "Source Code Pro:pixelsize=12"))
+
   ;; org babel languages
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((ipython . t)
@@ -417,7 +422,12 @@ you should place your code here."
                                  (R . t)
                                  (python . t)
                                  (emacs-lisp . t)))
+
+  ;; disable highlighting current line
   (global-hl-line-mode -1)
+
+  ;; hooks
+  (add-hook 'tex-mode-hook 'orgtbl-mode)
   )
 
 ;; Custom functions
