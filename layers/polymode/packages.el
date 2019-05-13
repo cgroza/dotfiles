@@ -15,10 +15,6 @@
     poly-noweb))
 
 (defun polymode/init-polymode ()
-
-  (use-package poly-R)
-  (use-package poly-markdown)
-  (use-package poly-org)
   (use-package polymode
     :mode (("\\.Rmd"   . Rmd-mode))
     :init
