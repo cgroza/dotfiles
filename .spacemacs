@@ -435,7 +435,7 @@ you should place your code here."
 
 (defun my-make-analysis-dir ()
   (interactive)
-  (let* ((dir (read-file-name "Analysis directory"))
+  (let* ((dir (read-directory-name "Analysis directory" "~/analysis/"))
          (date (car (split-string (shell-command-to-string "date +%d_%m_%Y") )))
          (full-path (concat dir "_" date "/"))
          (file-name (concat full-path
@@ -457,6 +457,15 @@ you should place your code here."
   (let ((buffer (generate-new-buffer "*shell*")))
     (switch-to-buffer buffer)
     (shell buffer)))
+
+(defun my-publish-pdf ()
+  (interactive)
+  (let ((pdf-path
+         (concat (file-name-sans-extension buffer-file-name) ".pdf")
+         ))
+    (copy-file pdf-path "~/git/wikicgroza/slides/" (read-directory-name "Publication directory" "~/git/wikicgroza/slides/"))
+    )
+  )
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
