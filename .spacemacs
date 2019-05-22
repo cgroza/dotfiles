@@ -434,7 +434,7 @@ you should place your code here."
 
 (defun my-make-analysis-dir ()
   (interactive)
-  (let* ((dir (read-directory-name "Analysis directory" my-analysis-dir))
+  (let* ((dir (read-file-name "Analysis directory" my-analysis-dir))
          (date (car (split-string (shell-command-to-string "date +%d_%m_%Y") )))
          (full-path (concat dir "_" date "/"))
          (file-name (concat full-path
