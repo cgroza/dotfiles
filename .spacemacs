@@ -393,7 +393,7 @@ you should place your code here."
   (global-set-key (kbd "<f7>") 'my-make-analysis-dir)
   (global-set-key (kbd "<f8>") 'treemacs)
   (global-set-key (kbd "<f9>") 'avy-goto-word-or-subword-1)
-  (global-set-key (kbd "<f12>") 'avy-goto-word-or-subword-1)
+  (global-set-key (kbd "<f12>") 'my-publish-pdf)
 
   ;; org src editing window position
   (setq org-src-window-setup 'split-window-below)
