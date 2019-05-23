@@ -461,5 +461,5 @@ you should place your code here."
   (let ((pdf-path
          (concat (file-name-sans-extension buffer-file-name) ".pdf")
          ))
-    (copy-file pdf-path (read-directory-name "Publication directory" my-publish-pdf-dir 1))))
+    (copy-file pdf-path (read-directory-name "Publication directory" my-publish-pdf-dir) 1)))
 
