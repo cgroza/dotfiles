@@ -9,4 +9,5 @@
 #+ORGTBL: SEND $1 orgtbl-to-latex
 $0
 % $
+% run orgtbl-send-table
 \end{comment}

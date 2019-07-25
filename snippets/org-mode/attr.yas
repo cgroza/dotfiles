@@ -2,5 +2,4 @@
 # name: Org latex width attribute
 # key: lattr
 # --
-
 #+ATTR_LATEX: :width 0.5\textwidth
