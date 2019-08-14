@@ -402,7 +402,8 @@ you should place your code here."
   (setq auto-mode-alist
         (append
          '(("\\.tut$" . tutch-mode)
-           ("\\.req$" . tutch-mode))
+           ("\\.req$" . tutch-mode)
+           ("\\.nf$" . groovy-mode))
          auto-mode-alist))
 
   ;; user defined variables
