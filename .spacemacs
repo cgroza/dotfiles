@@ -389,10 +389,14 @@ you should place your code here."
   (add-hook 'TeX-mode-hook 'orgtbl-mode)
   (add-to-list 'reftex-default-bibliography "~/Dropbox/Bib/cgroza.bib")
 
-
-
+  ;; helm bibtex
+  (helm-delete-action-from-source "Insert BibTeX key" helm-source-bibtex)
+  (helm-add-action-to-source "Insert BibTeX key" 'bibtex-completion-insert-key helm-source-bibtex 0)
   (setq bibtex-completion-bibliography '("~/Dropbox/Bib/cgroza.bib"))
 
+  ;; to support references in org-mode latex export
+  (setq org-latex-pdf-process (list
+                               "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
   ;; custom key bindings
   (define-key evil-normal-state-map (kbd "SPC '") 'my-shell)
   (global-set-key (kbd "<f5>") 'my-magit-auto-commit)
@@ -401,15 +405,13 @@ you should place your code here."
   (global-set-key (kbd "<f8>") 'treemacs)
   (global-set-key (kbd "<f12>") 'my-publish-pdf)
 
+  ;; asynchronous execution of code blocks
   (require 'async)
   (require 'ob)
   (add-to-list 'org-babel-default-header-args
                '(:async)
                '(:eval no-export))
 
-
-  (setq org-latex-pdf-process (list
-                               "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
   ;; org src editing window position
   (setq org-src-window-setup 'split-window-below)
   ;; file associations
@@ -440,7 +442,6 @@ you should place your code here."
 
   ;; disable highlighting current line
   (global-hl-line-mode -1)
-
   )
 
 ;; Custom functions
