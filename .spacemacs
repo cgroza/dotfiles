@@ -394,6 +394,7 @@ you should place your code here."
   (global-set-key (kbd "<f8>") 'treemacs)
   (global-set-key (kbd "<f12>") 'my-publish-pdf)
 
+  (require 'async)
   (add-to-list 'org-babel-default-header-args
                '(:async))
 
