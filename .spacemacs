@@ -387,6 +387,7 @@ you should place your code here."
             #'TeX-revert-document-buffer)
   ;; hooks
   (add-hook 'TeX-mode-hook 'orgtbl-mode)
+  (require 'reftex)
   (add-to-list 'reftex-default-bibliography "~/Dropbox/Bib/cgroza.bib")
 
   ;; helm bibtex
