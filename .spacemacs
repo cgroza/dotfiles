@@ -403,6 +403,7 @@ you should place your code here."
   (global-set-key (kbd "<f6>") 'yas-expand)
   (global-set-key (kbd "<f7>") 'my-make-analysis-dir)
   (global-set-key (kbd "<f8>") 'treemacs)
+  (global-set-key (kbd "<f9>") 'helm-bibtex)
   (global-set-key (kbd "<f12>") 'my-publish-pdf)
 
   ;; asynchronous execution of code blocks
