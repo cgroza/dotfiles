@@ -385,6 +385,13 @@ you should place your code here."
   ;; to have the buffer refresh after compilation
   (add-hook 'TeX-after-compilation-finished-functions
             #'TeX-revert-document-buffer)
+  ;; hooks
+  (add-hook 'TeX-mode-hook 'orgtbl-mode)
+  (add-to-list 'reftex-default-bibliography "~/Dropbox/Bib/cgroza.bib")
+
+
+
+  (setq bibtex-completion-bibliography '("~/Dropbox/Bib/cgroza.bib"))
 
   ;; custom key bindings
   (define-key evil-normal-state-map (kbd "SPC '") 'my-shell)
@@ -434,8 +441,6 @@ you should place your code here."
   ;; disable highlighting current line
   (global-hl-line-mode -1)
 
-  ;; hooks
-  (add-hook 'tex-mode-hook 'orgtbl-mode)
   )
 
 ;; Custom functions
