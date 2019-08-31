@@ -4,13 +4,14 @@
 # --
 
 #+OPTIONS: toc:nil num:nil ^:{}
-#+STARTUP: inlineimages latexpreview
 #+AUTHOR: Cristian Groza
 #+TITLE: ${1:Title}
-
 #+EXPORT_EXCLUDE_TAGS: noexport
 #+LATEX_CLASS: article
 #+LATEX_CLASS_OPTIONS: [a4paper]
 #+LATEX_HEADER: \usepackage{hyperref}
 
 $0
+
+\bibliographystyle{plain}
+\bibliography{/home/cgroza/Dropbox/Bib/cgroza.bib}
