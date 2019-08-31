@@ -397,7 +397,8 @@ you should place your code here."
   (require 'async)
   (require 'ob)
   (add-to-list 'org-babel-default-header-args
-               '(:async))
+               '(:async)
+               '(:eval no-export))
 
 
   (setq org-latex-pdf-process (list
