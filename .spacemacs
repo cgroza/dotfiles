@@ -390,8 +390,7 @@ you should place your code here."
   (add-to-list 'reftex-default-bibliography "~/Dropbox/Bib/cgroza.bib")
 
   ;; helm bibtex
-  (helm-delete-action-from-source "Insert BibTeX key" helm-source-bibtex)
-  (helm-add-action-to-source "Insert BibTeX key" 'bibtex-completion-insert-key helm-source-bibtex 0)
+  (require 'helm-bibtex)
   (setq bibtex-completion-bibliography '("~/Dropbox/Bib/cgroza.bib"))
 
   ;; to support references in org-mode latex export
