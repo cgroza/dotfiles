@@ -435,7 +435,7 @@ you should place your code here."
         )
 
   ;; font
-  (add-to-list 'default-frame-alist '(font . "Source Code Pro:pixelsize=12"))
+  (add-to-list 'default-frame-alist '(font . "Source Code Pro:pixelsize=13"))
 
   ;; org babel languages
   (org-babel-do-load-languages 'org-babel-load-languages
@@ -446,6 +446,9 @@ you should place your code here."
 
   ;; disable highlighting current line
   (global-hl-line-mode -1)
+
+  ;; ess mode
+  (setq ess-eval-visibly 'nowait)
   )
 
 ;; Custom functions
