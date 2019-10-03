@@ -484,6 +484,26 @@ you should place your code here."
          ))
     (copy-file pdf-path (read-directory-name "Publication directory" my-publish-pdf-dir) 1)))
 
+(defvar R-remote-host "rupert.cs.mcgill.ca")
+(defvar R-remote-session "R-")
+(defvar R-remote-directory "/home/mcb/li_lab/cgroza/dev/QLS_Li_Lab")
+(defun R-remote (&optional remote-host session directory)
+  "Connect to the remote-host's dtach session running R."
+  (interactive (list
+                (read-from-minibuffer "R remote host: " R-remote-host)
+                (read-from-minibuffer "R remote session: " R-remote-session)
+                (read-from-minibuffer "R remote directory: " R-remote-directory)))
+  (pop-to-buffer (make-comint (concat "remote-" session)
+                              "ssh" nil "-Y" "-C" "-t" remote-host
+                              "export PATH=$PATH:~/bin"
+                              "cd" directory ";"
+                              "dtach" "-A" (concat ".dtach-" session)
+                              "-z" "-E" "-r" "none"
+                              inferior-R-program-name "--no-readline"
+                              inferior-R-args))
+  (ess-remote (process-name (get-buffer-process (current-buffer))) "R")
+  (setq comint-process-echoes t))
+
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
 This is an auto-generated function, do not modify its content directly, use
