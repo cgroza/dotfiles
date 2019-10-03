@@ -493,9 +493,10 @@ you should place your code here."
                 (read-from-minibuffer "R remote host: " R-remote-host)
                 (read-from-minibuffer "R remote session: " R-remote-session)
                 (read-from-minibuffer "R remote directory: " R-remote-directory)))
+  (require 'ess-custom)
   (pop-to-buffer (make-comint (concat "remote-" session)
                               "ssh" nil "-Y" "-C" "-t" remote-host
-                              "export PATH=$PATH:~/bin"
+                              "export PATH=$PATH:~/bin" ";"
                               "cd" directory ";"
                               "dtach" "-A" (concat ".dtach-" session)
                               "-z" "-E" "-r" "none"
