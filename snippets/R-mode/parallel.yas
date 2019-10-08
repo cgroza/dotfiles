@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: R parallel
+# key: parallel
+# --
+
+library(parallel)
+
+cluster <- makeCluster(${0:10}, type=${1:"FORK"})
+
+stopCluster(cluster)
