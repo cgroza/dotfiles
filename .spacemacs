@@ -486,7 +486,7 @@ you should place your code here."
 
 (defvar R-remote-host "rupert.cs.mcgill.ca")
 (defvar R-remote-session "R-")
-(defvar R-remote-directory "/home/mcb/li_lab/cgroza/dev/QLS_Li_Lab")
+(defvar R-remote-directory "$HOME")
 (defun R-remote (&optional remote-host session directory)
   "Connect to the remote-host's dtach session running R."
   (interactive (list
