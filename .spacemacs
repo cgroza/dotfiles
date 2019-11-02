@@ -32,7 +32,6 @@ values."
    dotspacemacs-configuration-layers
    '(yaml
      tutch
-     polymode
      themes-megapack
      html
      csv
@@ -63,7 +62,7 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    ;; dotspacemacs-additional-packages '(yasnippet-snippets ob-ipython yasnippet-snippets poly-R poly-markdown poly-org poly-noweb)
-   dotspacemacs-additional-packages '(yasnippet-snippets ob-ipython yasnippet-snippets ob-async outline-magic)
+   dotspacemacs-additional-packages '(yasnippet-snippets ob-ipython yasnippet-snippets ob-async outline-magic polymode poly-R poly-noweb poly-markdown poly-org)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -423,7 +422,12 @@ you should place your code here."
         (append
          '(("\\.tut$" . tutch-mode)
            ("\\.req$" . tutch-mode)
-           ("\\.nf$" . groovy-mode))
+           ("\\.nf$" . groovy-mode)
+           ("\\.md" . poly-markdown-mode)
+           ("\\.Snw" . poly-noweb+r-mode)
+           ("\\.Rnw" . poly-noweb+r-mode)
+           ("\\.Rmd" . poly-markdown+r-mode)
+           )
          auto-mode-alist))
 
   ;; user defined variables
