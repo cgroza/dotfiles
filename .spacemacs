@@ -375,14 +375,6 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   ;; to use pdfview with auctex
-  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-        TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-        TeX-source-correlate-start-server t) ;; not sure if last line is neccessary
-  ;; to have the buffer refresh after compilation
-  (add-hook 'TeX-after-compilation-finished-functions
-            #'TeX-revert-document-buffer)
-  ;; hooks
-  (add-hook 'TeX-mode-hook 'orgtbl-mode)
   (with-eval-after-load 'reftex
     (add-to-list 'reftex-default-bibliography "~/Dropbox/Bib/cgroza.bib")
   )
@@ -391,14 +383,6 @@ you should place your code here."
   (with-eval-after-load 'helm-bibtex
     (setq bibtex-completion-bibliography '("~/Dropbox/Bib/cgroza.bib"))
   )
-
-  ;; section hide/cycle
-  (eval-after-load 'outline
-    '(progn
-       (require 'outline-magic)
-       (define-key outline-minor-mode-map (kbd "<C-tab>") 'outline-cycle)))
-
-  (add-hook 'TeX-mode-hook 'outline-minor-mode)
 
   ;; custom key bindings
   (define-key evil-normal-state-map (kbd "SPC '") 'my-shell)
@@ -411,22 +395,22 @@ you should place your code here."
 
   ;; asynchronous execution of code blocks
   (with-eval-after-load 'org
-    (setq org-export-with-drawers nil)
-    ;; org src editing window position
-    (setq org-src-window-setup 'split-window-below)
     ;; org babel languages
     (org-babel-do-load-languages 'org-babel-load-languages
                                  '((ipython . t) (shell . t)
                                    (groovy . t) (java . t)
                                    (scala . t) (R . t)
                                    (python . t) (emacs-lisp . t)))
-    (setq org-confirm-babel-ealuate nil)
-    ;; inline image width
-    (setq org-image-actual-width 600)
-    ;; to support references in org-mode latex export
-    (setq org-latex-pdf-process (list
-                                 "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
-    (setq org-babel-default-header-args '((:tangle . "yes")
+    (setq org-confirm-babel-ealuate nil
+          ;; inline image width
+          org-image-actual-width 600
+          org-export-with-drawers nil
+          ;; org src editing window position
+          org-src-window-setup 'split-window-below
+          ;; to support references in org-mode latex export
+          org-latex-pdf-process (list
+                                 "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f")
+          org-babel-default-header-args '((:tangle . "yes")
                                           (:async . "yes")
                                           (:eval . "no-export")
                                           (:results . "replace")
@@ -438,8 +422,6 @@ you should place your code here."
                                           ))
   )
 
-  ;; disable highlighting current line
-  (global-hl-line-mode -1)
 
   ;; user defined variables
   (setq c-default-style "java"
@@ -447,17 +429,40 @@ you should place your code here."
         my-analysis-dir  "~/analysis/"
         my-publish-pdf-dir "~/git/wikicgroza/slides/"
         evil-want-Y-yank-to-eol nil
-        ess-eval-visibly 'nowait)
-
-  ;; font
-  (add-to-list 'default-frame-alist '(font . "Source Code Pro:pixelsize=13"))
-  ;; file associations
-  (setq auto-mode-alist
+        ess-eval-visibly 'nowait
+        ;; file associations
+        auto-mode-alist
         (append
          '(("\\.tut$" . tutch-mode)
            ("\\.req$" . tutch-mode)
            ("\\.nf$" . groovy-mode))
-         auto-mode-alist))
+         auto-mode-alist)
+        ;; TeX
+        TeX-view-program-selection '((output-pdf "PDF Tools"))
+        TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+        TeX-source-correlate-start-server t ;; not sure if last line is neccessary
+        )
+
+  ;; Font
+  (add-to-list 'default-frame-alist '(font . "Source Code Pro:pixelsize=13"))
+
+  ;; outline mode keybind for section hide/cycle
+  (eval-after-load 'outline
+    '(progn
+       (require 'outline-magic)
+       (define-key outline-minor-mode-map (kbd "<C-tab>") 'outline-cycle)))
+
+  ;; Hooks
+  ;; outline for folding sections
+  (add-hook 'TeX-mode-hook 'outline-minor-mode)
+  ;; to have the buffer refresh after compilation
+  (add-hook 'TeX-after-compilation-finished-functions
+            #'TeX-revert-document-buffer)
+  ;; hooks
+  (add-hook 'TeX-mode-hook 'orgtbl-mode)
+
+  ;; disable highlighting current line
+  (global-hl-line-mode -1)
   )
 
 ;; Custom functions
