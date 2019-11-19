@@ -374,17 +374,10 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  ;; org babel languages
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               '((ipython . t) (shell . t)
-                                 (groovy . t) (java . t)
-                                 (scala . t) (R . t)
-                                 (python . t) (emacs-lisp . t)))
   ;; to use pdfview with auctex
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
         TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
         TeX-source-correlate-start-server t) ;; not sure if last line is neccessary
-  (setq org-confirm-babel-evaluate nil)
   ;; to have the buffer refresh after compilation
   (add-hook 'TeX-after-compilation-finished-functions
             #'TeX-revert-document-buffer)
@@ -418,6 +411,16 @@ you should place your code here."
 
   ;; asynchronous execution of code blocks
   (with-eval-after-load 'org
+    (setq org-export-with-drawers nil)
+    ;; org src editing window position
+    (setq org-src-window-setup 'split-window-below)
+    ;; org babel languages
+    (org-babel-do-load-languages 'org-babel-load-languages
+                                 '((ipython . t) (shell . t)
+                                   (groovy . t) (java . t)
+                                   (scala . t) (R . t)
+                                   (python . t) (emacs-lisp . t)))
+    (setq org-confirm-babel-ealuate nil)
     ;; inline image width
     (setq org-image-actual-width 600)
     ;; to support references in org-mode latex export
@@ -438,20 +441,15 @@ you should place your code here."
   ;; disable highlighting current line
   (global-hl-line-mode -1)
 
-  ;; ess mode
-  (setq ess-eval-visibly 'nowait)
-  ;; org src editing window position
-  (setq org-src-window-setup 'split-window-below)
   ;; user defined variables
   (setq c-default-style "java"
-        org-export-with-drawers nil
         python-shell-interpreter "ipython3"
         my-analysis-dir  "~/analysis/"
         my-publish-pdf-dir "~/git/wikicgroza/slides/"
-        evil-want-Y-yank-to-eol nil)
+        evil-want-Y-yank-to-eol nil
+        ess-eval-visibly 'nowait)
 
   ;; font
-
   (add-to-list 'default-frame-alist '(font . "Source Code Pro:pixelsize=13"))
   ;; file associations
   (setq auto-mode-alist
