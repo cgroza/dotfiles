@@ -401,7 +401,7 @@ you should place your code here."
                                    (groovy . t) (java . t)
                                    (scala . t) (R . t)
                                    (python . t) (emacs-lisp . t)))
-    (setq org-confirm-babel-ealuate nil
+    (setq org-confirm-babel-evaluate nil
           ;; inline image width
           org-image-actual-width 600
           org-export-with-drawers nil
