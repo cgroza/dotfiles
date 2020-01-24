@@ -3,6 +3,6 @@
 # key: Rplot
 # --
 
-#+BEGIN_SRC R :exports results :results output graphics :file ${1:plot.pdf} :session ${2:*R*}
+#+BEGIN_SRC R :exports results :results file graphics :file ${1:plot.pdf} :session ${2:*R*}
 $0
 #+END_SRC
