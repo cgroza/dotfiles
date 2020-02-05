@@ -3,6 +3,6 @@
 # key: Rtbl
 # --
 
-#+BEGIN_SRC R :exports results :results value table :session ${1:*R*}
+#+BEGIN_SRC R :exports results :results value table :session ${3:*R-`(buffer-name)`*}
 $0
 #+END_SRC

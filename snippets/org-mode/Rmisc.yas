@@ -3,6 +3,6 @@
 # key: Rmisc
 # --
 
-#+BEGIN_SRC R :exports ${1:none} :results ${2:none} :session ${3:*R*}
+#+BEGIN_SRC R :exports ${1:none} :results ${2:none} :session ${3:*R-`(buffer-name)`*}
 $0
 #+END_SRC
