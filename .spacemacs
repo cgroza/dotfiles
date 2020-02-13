@@ -463,6 +463,7 @@ you should place your code here."
 
   ;; disable highlighting current line
   (global-hl-line-mode -1)
+  (setq winum-scope 'frame-local)
   )
 
 ;; Custom functions
