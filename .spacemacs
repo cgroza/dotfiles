@@ -49,7 +49,7 @@ values."
      git
      markdown
      (org :variables org-enable-reveal-js-support t)
-     ess
+     (ess :variables ess-r-backed 'ess)
      scala
      (shell :variables
             shell-default-height 30
@@ -141,8 +141,8 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(darkokai
-                         solarized-dark
                          solarized-light
+                         solarized-dark
                          spacemacs-dark
                          spacemacs-light)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
@@ -394,6 +394,11 @@ you should place your code here."
   (global-set-key (kbd "<f9>") 'helm-bibtex)
   (global-set-key (kbd "<f12>") 'my-publish-pdf)
 
+  (with-eval-after-load 'lsp-ui
+    (setq lsp-ui-doc-delay 0.5
+          lsp-ui-doc-position 'bottom
+          lsp-ui-doc-alignment 'window))
+
   ;; asynchronous execution of code blocks
   (with-eval-after-load 'org
     ;; org babel languages
@@ -422,7 +427,6 @@ you should place your code here."
                                           )
           )
   )
-
 
   ;; user defined variables
   (setq c-default-style "java"
@@ -525,3 +529,21 @@ you should place your code here."
   (ess-remote (process-name (get-buffer-process (current-buffer))) "R")
   (setq comint-process-echoes t))
 
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(flycheck-lintr-linters "with_defaults(line_length_linter(120))"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+)
