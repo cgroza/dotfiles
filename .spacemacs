@@ -149,11 +149,11 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
-                               :weight normal
-                               :width normal
-                               :powerline-scale 0.8)
+   ;; dotspacemacs-default-font '("Source Code Pro"
+   ;;                             :size 13
+   ;;                             :weight normal
+   ;;                             :width normal
+   ;;                             :powerline-scale 0.8)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -428,6 +428,9 @@ you should place your code here."
           )
   )
 
+  (spacemacs/set-leader-keys-for-major-mode 'python-mode "s l" 'python-shell-send-line)
+  (spacemacs/set-leader-keys-for-major-mode 'python-mode "s L" 'python-shell-send-line-switch)
+
   ;; user defined variables
   (setq c-default-style "java"
         python-shell-interpreter "ipython3"
@@ -440,7 +443,7 @@ you should place your code here."
         (append
          '(("\\.tut$" . tutch-mode)
            ("\\.req$" . tutch-mode)
-           ("\\.nf$" . groovy-mode))
+           ("\\.nxf$" . groovy-mode))
          auto-mode-alist)
         ;; TeX
         TeX-view-program-selection '((output-pdf "PDF Tools"))
@@ -449,7 +452,7 @@ you should place your code here."
         )
 
   ;; Font
-  (add-to-list 'default-frame-alist '(font . "Source Code Pro:pixelsize=13"))
+  ;; (add-to-list 'default-frame-alist '(font . "Source Code Pro:pixelsize=13"))
 
   ;; outline mode keybind for section hide/cycle
   (eval-after-load 'outline
@@ -508,6 +511,16 @@ you should place your code here."
          ))
     (copy-file pdf-path (read-directory-name "Publication directory" my-publish-pdf-dir) 1)))
 
+(defun python-shell-send-line ()
+  (interactive)
+  (python-shell-send-string (thing-at-point 'line t)))
+
+(defun python-shell-send-line-switch ()
+  (interactive)
+  (python-shell-send-string (thing-at-point 'line t))
+  (python-shell-switch-to-shell)
+  )
+
 (defvar R-remote-host "rupert.cs.mcgill.ca")
 (defvar R-remote-session "R-")
 (defvar R-remote-directory "$HOME")
@@ -529,6 +542,7 @@ you should place your code here."
   (ess-remote (process-name (get-buffer-process (current-buffer))) "R")
   (setq comint-process-echoes t))
 
+
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
 This is an auto-generated function, do not modify its content directly, use
@@ -547,3 +561,17 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  )
 )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (yasnippet which-key undo-tree org-plus-contrib mmm-mode hydra expand-region evil-unimpaired f s dash diff-hl csv-mode company-statistics company auctex async nadvice aggressive-indent adaptive-wrap ace-window avy darkokai-theme))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
