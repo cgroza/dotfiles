@@ -33,8 +33,9 @@ values."
    dotspacemacs-configuration-layers
    '(javascript
      lsp
-     ipython-notebook
+     ;; ipython-notebook
      rust
+     groovy
      yaml
      themes-megapack
      html
@@ -53,7 +54,6 @@ values."
      markdown
      (org :variables org-enable-reveal-js-support t)
      (ess :variables ess-r-backed 'lsp)
-     scala
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
@@ -68,16 +68,10 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(yasnippet-snippets yasnippet-snippets dired-rsync
                                                          ob-async ob-ipython
-                                                         polymode poly-R poly-markdown
-                                                         poly-org poly-noweb outline-magic
-
-
-
-
-
-
-
-
+                                                         ;; polymode poly-R poly-markdown
+                                                         ;; poly-org poly-noweb
+                                                         outline-magic
+                                                         (nextflow-mode :location (recipe :fetcher github :repo "jackkamm/nextflow-mode"))
                                                          exec-path-from-shell transpose-frame)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -309,7 +303,7 @@ values."
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
    ;; (default '("ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("ack")
+   dotspacemacs-search-tools '("ack" "ag" "pt" "grep")
    ;; The default package repository used if no explicit repository has been
    ;; specified with an installed package.
    ;; Not used for now. (default nil)
@@ -414,6 +408,8 @@ you should place your code here."
   ;; yasnippets
   (yas-global-mode t)
 
+  (setq lsp-signature-auto-activate nil)
+
   (with-eval-after-load 'lsp-ui
     (setq lsp-ui-doc-delay 0.5
           lsp-ui-doc-position 'bottom
@@ -431,6 +427,8 @@ you should place your code here."
           ;; inline image width
           org-image-actual-width 600
           org-export-with-drawers nil
+          org-startup-indented 't
+          org-indent-indentation-per-level 0
           ;; org src editing window position
           org-src-window-setup 'split-window-below
           ;; to support references in org-mode latex export
@@ -451,6 +449,7 @@ you should place your code here."
 
   (spacemacs/set-leader-keys-for-major-mode 'python-mode "s l" 'python-shell-send-line)
   (spacemacs/set-leader-keys-for-major-mode 'python-mode "s L" 'python-shell-send-line-switch)
+  (spacemacs/set-leader-keys "gfm" 'magit-file-dispatch)
 
   ;; user defined variables
   (setq c-default-style "java"
@@ -459,13 +458,15 @@ you should place your code here."
         my-publish-pdf-dir "~/git/wikicgroza/slides/"
         evil-want-Y-yank-to-eol nil
         ess-eval-visibly 'nowait
+        live-py-version "python3"
         compilation-scroll-output t
+        magit-repository-directories '(("~/git" . 1))
         ;; file associations
         auto-mode-alist
         (append
          '(("\\.tut$" . tutch-mode)
            ("\\.req$" . tutch-mode)
-           ("\\.nf$" . groovy-mode))
+           ("\\.nf$" . nextflow-mode))
          auto-mode-alist)
         ;; TeX
         TeX-view-program-selection '((output-pdf "PDF Tools"))
@@ -507,6 +508,7 @@ you should place your code here."
 
   ;; disable highlighting current line
   (global-hl-line-mode -1)
+  (global-eldoc-mode -1)
   (setq winum-scope 'frame-local)
   )
 
@@ -584,27 +586,6 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(evil-undo-system 'undo-tree)
  '(flycheck-lintr-linters "with_defaults(line_length_linter(120))")
- '(package-selected-packages
-   (quote
-    (transpose-frame tide typescript-mode tern nodejs-repl livid-mode skewer-mode js2-refactor multiple-cursors js2-mode js-doc import-js grizzl helm-gtags ggtags dap-mode posframe bui counsel-gtags counsel swiper add-node-modules-path yasnippet which-key undo-tree org-plus-contrib mmm-mode hydra expand-region evil-unimpaired f s dash diff-hl csv-mode company-statistics company auctex async nadvice aggressive-indent adaptive-wrap ace-window avy darkokai-theme))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(transpose-frame zenburn-theme zen-and-art-theme yasnippet-snippets yapfify yaml-mode xterm-color ws-butler winum white-sand-theme web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spaceline powerline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode scala-mode sbt-mode sass-mode reverse-theme restart-emacs rebecca-theme rainbow-delimiters railscasts-theme racer pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode professional-theme popwin poly-org poly-R poly-noweb poly-markdown planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el paradox spinner pandoc-mode ox-reveal ox-pandoc ht orgit organic-green-theme org-ref pdf-tools key-chord ivy tablist org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-ipython ob-async noflet noctilux-theme neotree naquadah-theme mwim mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow magit-popup madhat2r-theme macrostep lush-theme lorem-ipsum livid-mode skewer-mode simple-httpd live-py-mode linum-relative link-hint light-soap-theme json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme indent-guide lv hy-mode dash-functional hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation heroku-theme hemisu-theme helm-themes helm-swoop helm-pydoc helm-projectile projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-bibtex bibtex-completion parsebib helm-ag hc-zenburn-theme haml-mode gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md gandalf-theme fuzzy flyspell-correct-helm flyspell-correct flycheck-rust flycheck-pos-tip pos-tip flycheck pkg-info epl flx-ido flx flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse exotica-theme evil-visualstar evil-visual-mark-mode evil-tutor evil-surround evil-snipe evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit git-commit transient evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-ediff evil-args evil-anzu anzu evil goto-chg eval-sexp-fu ess-smart-equals ess-R-data-view ctable ess espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav ein with-editor exec-path-from-shell polymode deferred request anaphora websocket dumb-jump dracula-theme django-theme disaster dired-rsync diminish define-word darktooth-theme autothemer darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme company-web web-completion-data company-c-headers company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cmake-mode clues-theme clean-aindent-mode clang-format cherry-blossom-theme cargo markdown-mode rust-mode busybee-theme bubbleberry-theme birds-of-paradise-plus-theme bind-map bind-key biblio biblio-core badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile packed apropospriate-theme anti-zenburn-theme anaconda-mode pythonic ample-zen-theme ample-theme alect-themes afternoon-theme ace-link ace-jump-helm-line helm helm-core ac-ispell auto-complete popup yasnippet which-key undo-tree org-plus-contrib mmm-mode hydra expand-region evil-unimpaired f s dash diff-hl csv-mode company-statistics company auctex async nadvice aggressive-indent adaptive-wrap ace-window avy darkokai-theme)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+))
