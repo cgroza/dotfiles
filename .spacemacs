@@ -399,11 +399,6 @@ you should place your code here."
   ;; custom key bindings
   (define-key evil-normal-state-map (kbd "SPC '") 'my-shell)
   ;; (global-set-key (kbd "<f5>") 'yas-expand)
-  (global-set-key (kbd "<f6>") 'my-make-analysis-dir)
-  (global-set-key (kbd "<f7>") 'my-publish-pdf)
-  (global-set-key (kbd "<f8>") 'transpose-frame)
-  (global-set-key (kbd "<f9>") 'helm-bibtex)
-  (global-set-key (kbd "<f12>") 'treemacs)
 
   ;; yasnippets
   (yas-global-mode t)
@@ -447,9 +442,17 @@ you should place your code here."
           )
   )
 
-  (spacemacs/set-leader-keys-for-major-mode 'python-mode "s l" 'python-shell-send-line)
-  (spacemacs/set-leader-keys-for-major-mode 'python-mode "s L" 'python-shell-send-line-switch)
-  (spacemacs/set-leader-keys "gfm" 'magit-file-dispatch)
+  (spacemacs/set-leader-keys-for-major-mode 'python-mode
+    "s l" 'python-shell-send-line
+    "s L" 'python-shell-send-line-switch)
+
+  (spacemacs/set-leader-keys "gfm" 'magit-file-dispatch
+    "ow" 'writeroom-mode
+    "ot" 'transpose-frame
+    "oT" 'treemacs
+    "oa" 'my-make-analysis-dir
+    "op" 'my-publish-pdf
+    )
 
   ;; user defined variables
   (setq c-default-style "java"
@@ -496,6 +499,10 @@ you should place your code here."
     '(progn
        (require 'outline-magic)
        (define-key outline-minor-mode-map (kbd "<C-tab>") 'outline-cycle)))
+
+  (add-to-list 'load-path "~/git/twauctex/")
+  (require 'twauctex)
+  (twauctex-global-mode)
 
   ;; Hooks
   ;; outline for folding sections
@@ -553,27 +560,6 @@ you should place your code here."
   (python-shell-send-string (thing-at-point 'line t))
   (python-shell-switch-to-shell)
   )
-
-(defvar R-remote-host "rupert.cs.mcgill.ca")
-(defvar R-remote-session "R-")
-(defvar R-remote-directory "$HOME")
-(defun R-remote (&optional remote-host session directory)
-  "Connect to the remote-host's dtach session running R."
-  (interactive (list
-                (read-from-minibuffer "R remote host: " R-remote-host)
-                (read-from-minibuffer "R remote session: " R-remote-session)
-                (read-from-minibuffer "R remote directory: " R-remote-directory)))
-  (require 'ess-custom)
-  (pop-to-buffer (make-comint (concat "remote-" session)
-                              "ssh" nil "-Y" "-C" "-t" remote-host
-                              "export PATH=$PATH:~/bin" ";"
-                              "cd" directory ";"
-                              "dtach" "-A" (concat ".dtach-" session)
-                              "-z" "-E" "-r" "none"
-                              inferior-R-program-name "--no-readline"
-                              inferior-R-args))
-  (ess-remote (process-name (get-buffer-process (current-buffer))) "R")
-  (setq comint-process-echoes t))
 
 
 (defun dotspacemacs/emacs-custom-settings ()
