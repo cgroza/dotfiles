@@ -71,7 +71,7 @@ values."
                                                          ;; polymode poly-R poly-markdown
                                                          ;; poly-org poly-noweb
                                                          outline-magic
-                                                         (nextflow-mode :location (recipe :fetcher github :repo "jackkamm/nextflow-mode"))
+                                                         ;;(nextflow-mode :location (recipe :fetcher github :repo "jackkamm/nextflow-mode"))
                                                          exec-path-from-shell transpose-frame)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -540,9 +540,8 @@ you should place your code here."
 
 (defun my-shell ()
   (interactive)
-  (let ((buffer (generate-new-buffer "*shell*")))
-    (switch-to-buffer buffer)
-    (shell buffer)))
+  (vterm (generate-new-buffer-name "shell"))
+  )
 
 (defun my-publish-pdf ()
   (interactive)
@@ -573,5 +572,18 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(evil-undo-system 'undo-tree)
+ '(evil-want-Y-yank-to-eol nil)
  '(flycheck-lintr-linters "with_defaults(line_length_linter(120))")
-))
+ '(safe-local-variable-values
+   '((org-ref-default-bibliography . /Users/cgroza/git/2020_paper/cgroza\.bib)
+     (javascript-backend . tide)
+     (javascript-backend . tern)
+     (javascript-backend . lsp)))
+ '(writeroom-width 120))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+)
