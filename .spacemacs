@@ -512,6 +512,7 @@ you should place your code here."
             #'TeX-revert-document-buffer)
   ;; hooks
   (add-hook 'TeX-mode-hook 'orgtbl-mode)
+  (add-hook 'TeX-mode-hook #'spacemacs/toggle-auto-fill-mode-off)
 
   ;; disable highlighting current line
   (global-hl-line-mode -1)
@@ -540,7 +541,7 @@ you should place your code here."
 
 (defun my-shell ()
   (interactive)
-  (vterm (generate-new-buffer-name "shell"))
+  (eshell (generate-new-buffer-name "shell"))
   )
 
 (defun my-publish-pdf ()
