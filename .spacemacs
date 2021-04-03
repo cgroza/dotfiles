@@ -101,7 +101,7 @@ values."
    ;; This variable has no effect if Emacs is launched with the parameter
    ;; `--insecure' which forces the value of this variable to nil.
    ;; (default t)
-   dotspacemacs-elpa-https t
+   dotspacemacs-elpa-https nil
    ;; Maximum allowed time in seconds to contact an ELPA repository.
    dotspacemacs-elpa-timeout 5
    ;; If non nil then spacemacs will check for updates at startup
@@ -452,6 +452,7 @@ you should place your code here."
     "oT" 'treemacs
     "oa" 'my-make-analysis-dir
     "op" 'my-publish-pdf
+    "om" 'imenu-list-minor-mode
     )
 
   ;; user defined variables
@@ -512,7 +513,7 @@ you should place your code here."
             #'TeX-revert-document-buffer)
   ;; hooks
   (add-hook 'TeX-mode-hook 'orgtbl-mode)
-  (add-hook 'TeX-mode-hook #'spacemacs/toggle-auto-fill-mode-off)
+  (remove-hook 'LaTeX-mode-hook #'latex/auto-fill-mode)
 
   ;; disable highlighting current line
   (global-hl-line-mode -1)
