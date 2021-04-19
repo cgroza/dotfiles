@@ -31,7 +31,8 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(javascript
+   '(ruby
+     javascript
      lsp
      ;; ipython-notebook
      rust
@@ -67,9 +68,10 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(yasnippet-snippets yasnippet-snippets dired-rsync
-                                                         ob-async ob-ipython
+                                                         ob-async ;;ob-ipython
                                                          ;; polymode poly-R poly-markdown
                                                          ;; poly-org poly-noweb
+                                                         org-noter
                                                          outline-magic
                                                          ;;(nextflow-mode :location (recipe :fetcher github :repo "jackkamm/nextflow-mode"))
                                                          exec-path-from-shell transpose-frame)
@@ -319,44 +321,36 @@ values."
    org-directory "~/Dropbox/Org"
    org-default-notes-file "work.org"
    org-agenda-files '("~/Dropbox/Org/work.org" "~/Dropbox/Org/school.org" "~/Dropbox/Org/personal.org")
-   org-capture-templates (quote (
-                                 ("n" "Notes")
-                                 ("nq" "Note quote" entry
-                                  (file+headline "personal.org" "Notes")
+   org-capture-templates (quote (("n" "Notes")
+                                 ("nq" "Note quote" entry (file+headline "personal.org" "Notes")
                                   "* %?
  %i
 ")
-                                 ("nf" "Note file"  entry
-                                  (file+headline "personal.org" "Notes")
+                                 ("nf" "Note file"  entry (file+headline "personal.org" "Notes")
                                   "* %?
  - %l
 
  %i")
-                                 ("nw" "Note web"  entry
-                                  (file+headline "personal.org" "Notes")
+                                 ("nw" "Note web"  entry (file+headline "personal.org" "Notes")
                                   "* %?
  - %x
 ")
                                  ("t" "Todo")
-                                 ("tq" "Todo quote" entry
-                                  (file+headline "personal.org" "Tasks")
+                                 ("tq" "Todo quote" entry (file+headline "personal.org" "Tasks")
                                   "* TODO %?
  %i
 ")
-                                 ("tf" "Todo file"  entry
-                                  (file+headline "personal.org" "Tasks")
+                                 ("tf" "Todo file"  entry (file+headline "personal.org" "Tasks")
                                   "* TODO %?
  - %l
 
  %i")
-                                 ("tw" "Todo web"  entry
-                                  (file+headline "personal.org" "Tasks")
+                                 ("tw" "Todo web"  entry (file+headline "personal.org" "Tasks")
                                   "* TODO %?
  - %x
 ")
 
-                                 ("l" "Links")
-                                 ("lc" "Link clipboard" plain
+                                 ("l" "Links") ("lc" "Link clipboard" plain
                                   (file+headline "personal.org" "Links")
                                   "- %? %x ")
                                  )
@@ -371,7 +365,7 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-
+  (setq latex-build-command "LatexMk")
   )
 
 (defun dotspacemacs/user-config ()
@@ -411,36 +405,34 @@ you should place your code here."
           lsp-ui-doc-alignment 'window))
 
   ;; asynchronous execution of code blocks
-  (with-eval-after-load 'org
-    ;; org babel languages
-    (org-babel-do-load-languages 'org-babel-load-languages
-                                 '((shell . t)
-                                   (R . t) (python . t)
-                                   (ipython . t)
-                                   (emacs-lisp . t)))
-    (setq org-confirm-babel-evaluate nil
-          ;; inline image width
-          org-image-actual-width 600
-          org-export-with-drawers nil
-          org-startup-indented 't
-          org-indent-indentation-per-level 0
-          ;; org src editing window position
-          org-src-window-setup 'split-window-below
-          ;; to support references in org-mode latex export
-          org-latex-pdf-process (list
-                                 "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f")
-          org-babel-default-header-args '((:tangle . "yes")
-                                          (:async . "yes")
-                                          (:eval . "no-export")
-                                          (:results . "replace")
-                                          (:session . "none")
-                                          (:hlines . "no")
-                                          (:noweb . "no")
-                                          (:cache . "no")
-                                          (:exports . "results")
-                                          )
-          )
-  )
+  ;; org babel languages
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((shell . t)
+                                 (R . t) (python . t)
+                                 ;; (ipython . t)
+                                 (emacs-lisp . t)))
+
+  (setq org-confirm-babel-evaluate nil
+        ;; inline image width
+        org-image-actual-width 600
+        org-export-with-drawers nil
+        ;; org-startup-indented 't
+        org-startup-indented nil
+        ;; org-indent-indentation-per-level 0
+        ;; org src editing window position
+        org-src-window-setup 'split-window-below
+        ;; to support references in org-mode latex export
+        org-babel-default-header-args '((:tangle . "yes")
+                                        (:async . "yes")
+                                        (:eval . "no-export")
+                                        (:results . "replace")
+                                        (:session . "none")
+                                        (:hlines . "no")
+                                        (:noweb . "no")
+                                        (:cache . "no")
+                                        (:exports . "results")
+                                        )
+        )
 
   (spacemacs/set-leader-keys-for-major-mode 'python-mode
     "s l" 'python-shell-send-line
@@ -453,10 +445,13 @@ you should place your code here."
     "oa" 'my-make-analysis-dir
     "op" 'my-publish-pdf
     "om" 'imenu-list-minor-mode
-    )
+    "ob" 'helm-bibtex-with-local-bibliography
+    "ans" 'org-noter
+    "ank" 'org-noter-kill-session)
 
   ;; user defined variables
-  (setq c-default-style "java"
+  (setq lsp-rust-server "~/bin/rust-analyzer"
+        c-default-style "java"
         python-shell-interpreter "ipython"
         my-analysis-dir  "~/analysis/"
         my-publish-pdf-dir "~/git/wikicgroza/slides/"
@@ -519,6 +514,25 @@ you should place your code here."
   (global-hl-line-mode -1)
   (global-eldoc-mode -1)
   (setq winum-scope 'frame-local)
+  (spacemacs/toggle-maximize-frame-on)
+
+  ;; this is an lsp-mode bug and imenu
+  (add-hook 'ess-r-mode-hook (lambda () (setq imenu-create-index-function (default-value 'imenu-create-index-function))) 100)
+
+  (use-package org-noter
+    :config
+    (setq org-noter-always-create-frame nil
+          org-noter-insert-note-no-questions t
+          org-noter-separate-notes-from-heading t
+          org-noter-auto-save-last-location t)
+
+    (defun org-noter-init-pdf-view ()
+      (pdf-view-fit-page-to-window)
+      (pdf-view-auto-slice-minor-mode)
+      (run-at-time "0.5 sec" nil #'org-noter))
+
+    ;; (add-hook 'pdf-view-mode-hook 'org-noter-init-pdf-view)
+    )
   )
 
 ;; Custom functions
@@ -573,11 +587,15 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(evil-move-beyond-eol t)
  '(evil-undo-system 'undo-tree)
  '(evil-want-Y-yank-to-eol nil)
  '(flycheck-lintr-linters "with_defaults(line_length_linter(120))")
+ '(package-selected-packages
+   '(ob-ess-julia seeing-is-believing rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocopfmt rubocop rspec-mode robe rbenv rake minitest helm-gtags ggtags enh-ruby-mode counsel-gtags counsel swiper chruby bundler inf-ruby add-node-modules-path yasnippet-snippets vterm live-py-mode link-hint hungry-delete google-translate forge magit editorconfig company blacken apropospriate-theme anaconda-mode helm lsp-mode treemacs posframe projectile bibtex-completion modus-themes all-the-icons which-key evil zenburn-theme zen-and-art-theme yapfify yaml-mode xterm-color ws-butler writeroom-mode winum white-sand-theme web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill undo-tree underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil transpose-frame toxi-theme toml-mode toc-org terminal-here tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon symbol-overlay sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection string-edit sphinx-doc spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode ron-mode reverse-theme restart-emacs rebecca-theme rainbow-delimiters railscasts-theme racer pytest pyenv-mode py-isort purple-haze-theme pug-mode professional-theme prettier-js popwin poetry planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme pdf-view-restore pcre2el password-generator parsebib paradox pandoc-mode ox-pandoc overseer outline-magic orgit-forge organic-green-theme org-superstar org-rich-yank org-ref org-re-reveal org-projectile org-present org-pomodoro org-mime org-download org-cliplink org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-async npm-mode nose nodejs-repl noctilux-theme naquadah-theme nameless mwim mustang-theme multi-term multi-line monokai-theme monochrome-theme molokai-theme moe-theme modus-vivendi-theme modus-operandi-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-svn magit-section magit-gitflow madhat2r-theme macrostep lush-theme lsp-ui lsp-python-ms lsp-pyright lsp-origami lsp-latex lorem-ipsum livid-mode light-soap-theme kaolin-themes json-navigator json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme indent-guide importmagic impatient-mode hybrid-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme groovy-mode groovy-imports grandshell-theme goto-chg gotham-theme google-c-style golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ ghub gh-md gandalf-theme fuzzy font-lock+ flyspell-correct-helm flycheck-ycmd flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-package flycheck-elsa flx-ido flatui-theme flatland-theme farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-snipe evil-org evil-numbers evil-nerd-commenter evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu ess-R-data-view espresso-theme eshell-z eshell-prompt-extras esh-help emr emmet-mode elisp-slime-nav dumb-jump drag-stuff dracula-theme dotenv-mode doom-themes django-theme disaster dired-rsync dired-quick-sort diminish devdocs define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dap-mode dakrone-theme cython-mode cyberpunk-theme csv-mode cpp-auto-include company-ycmd company-web company-rtags company-reftex company-math company-c-headers company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme closql clean-aindent-mode chocolate-theme cherry-blossom-theme cfrs centered-cursor-mode ccls cargo busybee-theme bubbleberry-theme browse-at-remote birds-of-paradise-plus-theme biblio badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme ace-window ace-link ace-jump-helm-line ac-ispell))
  '(safe-local-variable-values
-   '((org-ref-default-bibliography . /Users/cgroza/git/2020_paper/cgroza\.bib)
+   '((org-ref-default-bibliography . /Users/cgroza/git/cgroza\.github\.io/_bibliography/references\.bib)
+     (org-ref-default-bibliography . /Users/cgroza/git/2020_paper/cgroza\.bib)
      (javascript-backend . tide)
      (javascript-backend . tern)
      (javascript-backend . lsp)))
