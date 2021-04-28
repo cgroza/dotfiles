@@ -36,6 +36,8 @@ values."
      lsp
      ;; ipython-notebook
      rust
+     common-lisp
+     clojure
      groovy
      yaml
      themes-megapack
@@ -71,7 +73,6 @@ values."
                                                          ob-async ;;ob-ipython
                                                          ;; polymode poly-R poly-markdown
                                                          ;; poly-org poly-noweb
-                                                         org-noter
                                                          outline-magic
                                                          ;;(nextflow-mode :location (recipe :fetcher github :repo "jackkamm/nextflow-mode"))
                                                          exec-path-from-shell transpose-frame)
@@ -446,8 +447,7 @@ you should place your code here."
     "op" 'my-publish-pdf
     "om" 'imenu-list-minor-mode
     "ob" 'helm-bibtex-with-local-bibliography
-    "ans" 'org-noter
-    "ank" 'org-noter-kill-session)
+    "-" 'imenu-list-show)
 
   ;; user defined variables
   (setq lsp-rust-server "~/bin/rust-analyzer"
@@ -508,6 +508,7 @@ you should place your code here."
             #'TeX-revert-document-buffer)
   ;; hooks
   (add-hook 'TeX-mode-hook 'orgtbl-mode)
+  ;; interferes with twauctex
   (remove-hook 'LaTeX-mode-hook #'latex/auto-fill-mode)
 
   ;; disable highlighting current line
@@ -516,24 +517,7 @@ you should place your code here."
   (setq winum-scope 'frame-local)
   (spacemacs/toggle-maximize-frame-on)
 
-  ;; this is an lsp-mode bug and imenu
-  (add-hook 'ess-r-mode-hook (lambda () (setq imenu-create-index-function (default-value 'imenu-create-index-function))) 100)
-
-  (use-package org-noter
-    :config
-    (setq org-noter-always-create-frame nil
-          org-noter-insert-note-no-questions t
-          org-noter-separate-notes-from-heading t
-          org-noter-auto-save-last-location t)
-
-    (defun org-noter-init-pdf-view ()
-      (pdf-view-fit-page-to-window)
-      (pdf-view-auto-slice-minor-mode)
-      (run-at-time "0.5 sec" nil #'org-noter))
-
-    ;; (add-hook 'pdf-view-mode-hook 'org-noter-init-pdf-view)
-    )
-  )
+)
 
 ;; Custom functions
 
