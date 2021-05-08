@@ -451,7 +451,9 @@ you should place your code here."
 
   ;; user defined variables
   (setq lsp-rust-server "~/bin/rust-analyzer"
-        c-default-style "java"
+        lsp-idle-delay 1.0
+        read-process-output-max (* 1024 1024)
+        c-default-style "gnu"
         python-shell-interpreter "ipython"
         my-analysis-dir  "~/analysis/"
         my-publish-pdf-dir "~/git/wikicgroza/slides/"
@@ -583,6 +585,8 @@ This function is called at the very end of Spacemacs initialization."
      (javascript-backend . tide)
      (javascript-backend . tern)
      (javascript-backend . lsp)))
+ '(writeroom-global-effects
+   '(writeroom-set-alpha writeroom-set-menu-bar-lines writeroom-set-tool-bar-lines writeroom-set-vertical-scroll-bars writeroom-set-bottom-divider-width))
  '(writeroom-width 120))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
