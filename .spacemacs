@@ -55,7 +55,7 @@ values."
      emacs-lisp
      git
      markdown
-     (org :variables org-enable-reveal-js-support t)
+     (org :variables org-enable-reveal-js-support t org-enable-roam-protocol t)
      (ess :variables ess-r-backed 'lsp)
      (shell :variables
             shell-default-height 30
@@ -321,43 +321,8 @@ values."
    evil-want-Y-yank-to-eol nil
    org-directory "~/Dropbox/Org"
    org-default-notes-file "work.org"
-   org-agenda-files '("~/Dropbox/Org/work.org" "~/Dropbox/Org/school.org" "~/Dropbox/Org/personal.org")
-   org-capture-templates (quote (("n" "Notes")
-                                 ("nq" "Note quote" entry (file+headline "personal.org" "Notes")
-                                  "* %?
- %i
-")
-                                 ("nf" "Note file"  entry (file+headline "personal.org" "Notes")
-                                  "* %?
- - %l
-
- %i")
-                                 ("nw" "Note web"  entry (file+headline "personal.org" "Notes")
-                                  "* %?
- - %x
-")
-                                 ("t" "Todo")
-                                 ("tq" "Todo quote" entry (file+headline "personal.org" "Tasks")
-                                  "* TODO %?
- %i
-")
-                                 ("tf" "Todo file"  entry (file+headline "personal.org" "Tasks")
-                                  "* TODO %?
- - %l
-
- %i")
-                                 ("tw" "Todo web"  entry (file+headline "personal.org" "Tasks")
-                                  "* TODO %?
- - %x
-")
-
-                                 ("l" "Links") ("lc" "Link clipboard" plain
-                                  (file+headline "personal.org" "Links")
-                                  "- %? %x ")
-                                 )
-                                )
-   )
-  )
+   org-agenda-files '("~/org/brain/")
+   org-capture-templates ()))
 
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
@@ -376,7 +341,6 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-
   ;; import PATH from a running shell instance
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize))
@@ -435,6 +399,10 @@ you should place your code here."
                                         )
         )
 
+  (push '("b" "Brain" plain (function org-brain-goto-end)
+          "* %i%?" :empty-lines 1)
+        org-capture-templates)
+
   (spacemacs/set-leader-keys-for-major-mode 'python-mode
     "s l" 'python-shell-send-line
     "s L" 'python-shell-send-line-switch)
@@ -447,7 +415,9 @@ you should place your code here."
     "op" 'my-publish-pdf
     "om" 'imenu-list-minor-mode
     "ob" 'helm-bibtex-with-local-bibliography
-    "-" 'imenu-list-show)
+    "-" 'imenu-list-show
+    "Bv" 'org-brain-visualize
+    "Ba" 'org-brain-agenda)
 
   ;; user defined variables
   (setq lsp-rust-server "~/bin/rust-analyzer"
@@ -503,6 +473,7 @@ you should place your code here."
   (twauctex-global-mode)
 
   ;; Hooks
+  ;; (remove-hook 'org-mode-hook 'poly-org-mode)
   ;; outline for folding sections
   (add-hook 'TeX-mode-hook 'outline-minor-mode)
   ;; to have the buffer refresh after compilation
@@ -512,7 +483,6 @@ you should place your code here."
   (add-hook 'TeX-mode-hook 'orgtbl-mode)
   ;; interferes with twauctex
   (remove-hook 'LaTeX-mode-hook #'latex/auto-fill-mode)
-
   ;; disable highlighting current line
   (global-hl-line-mode -1)
   (global-eldoc-mode -1)
