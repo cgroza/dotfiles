@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: Jekyll post front matter
+# key: post
+# --
+---
+layout: post
+title: 'Segmenting signal in genome graphs'
+---
+
+$0
+
+{% bibliography --cited %}
+
+<!-- Local Variables: -->
+<!-- org-ref-default-bibliography: /Users/cgroza/git/cgroza.github.io/_bibliography/references.bib -->
+<!-- End: -->
