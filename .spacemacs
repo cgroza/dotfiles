@@ -432,6 +432,7 @@ you should place your code here."
     "om" 'imenu-list-minor-mode
     "ob" 'helm-bibtex-with-local-bibliography
     "-" 'imenu-list-show
+    "ol" 'my-cleanup-latex
     )
   (setq org-roam-directory "~/Dropbox/Org/org-roam")
 
@@ -510,7 +511,34 @@ you should place your code here."
   (spacemacs/toggle-maximize-frame-on)
 )
 
+(defvar my-latex-cleanup-referenced-files
+  "\\\\\\(includegraphics\\|addbibresource\\|include\\)\\(\\[.*\\]\\)?{\\(.*\\)}"
+  )
+
 ;; Custom functions
+(defun my-cleanup-latex ()
+  (interactive)
+  (if TeX-mode-p
+      (if buffer-file-name
+          (let* ((clean-directory (read-directory-name "Export directory"))
+                 (new-latex-file (expand-file-name clean-directory (file-name-base buffer-file-name))))
+            (make-directory clean-directory t)
+            (save-buffer)
+            (copy-file buffer-file-name new-latex-file)
+            (save-excursion
+              (beginning-of-buffer)
+              (while (re-search-forward my-latex-cleanup-referenced-files nil t)
+                (let* ((referenced-file (string-trim (match-string 3)))
+                       (destination-file (expand-file-name clean-directory (file-name-base referenced-file))))
+                  (message "Copying %s to %s" referenced-file destination-file)
+                  (copy-file referenced-file destination-file)
+                  )
+                )
+              )
+            )
+        (message "Not visiting a file."))
+    (message "Not a TeX file!"))
+  )
 
 (defun my-make-analysis-dir ()
   (interactive)
