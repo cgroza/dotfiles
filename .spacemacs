@@ -57,7 +57,7 @@ values."
      git
      markdown
      (org :variables org-enable-reveal-js-support t org-enable-roam-support t org-enable-roam-protocol t)
-     (ess :variables ess-r-backed 'lsp)
+     (ess :variables ess-r-backed 'lsp ess-help-own-frame t)
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
@@ -151,7 +151,9 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(darkokai
+   dotspacemacs-themes '(modus-operandi
+                         modus-vivendi
+                         darkokai
                          solarized-light
                          solarized-dark
                          spacemacs-dark
@@ -161,7 +163,7 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
+                               :size 14
                                :weight normal
                                :width normal
                                :powerline-scale 0.8)
