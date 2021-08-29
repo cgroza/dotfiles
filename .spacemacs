@@ -517,28 +517,42 @@ you should place your code here."
 
 ;; Custom functions
 (defun my-cleanup-latex ()
+  """
+Copies the TeX file to a new directory.
+Walks all includegraphics, include, addbibresource states and copies referenced files to the root of the new directories.
+Edits the referenced file paths in the copied TeX files to point to the new paths in the new root directory.
+Assumes that all referenced file paths are relative to the directory of the TeX file, and are not absolute.
+  """
   (interactive)
   (if TeX-mode-p
       (if buffer-file-name
           (let* ((clean-directory (read-directory-name "Export directory"))
-                 (new-latex-file (expand-file-name clean-directory (file-name-base buffer-file-name))))
+                 (new-latex-file (concat clean-directory (file-name-nondirectory buffer-file-name)))
+                 (original-directory (file-name-directory buffer-file-name)))
+            (message "%s %s %s" clean-directory original-directory new-latex-file)
             (make-directory clean-directory t)
             (save-buffer)
             (copy-file buffer-file-name new-latex-file)
             (save-excursion
+              (switch-to-buffer (find-file new-latex-file))
               (beginning-of-buffer)
               (while (re-search-forward my-latex-cleanup-referenced-files nil t)
-                (let* ((referenced-file (string-trim (match-string 3)))
-                       (destination-file (expand-file-name clean-directory (file-name-base referenced-file))))
+                (let* ((referenced-file (concat original-directory (string-trim (match-string 3)) ))
+                       (referenced-name (file-name-nondirectory referenced-file))
+                       (destination-file (concat clean-directory referenced-name)))
                   (message "Copying %s to %s" referenced-file destination-file)
                   (copy-file referenced-file destination-file)
+                  (replace-match (format "\\\\\\1\\2{%s}" referenced-name))
                   )
                 )
+              (save-buffer)
+              (kill-current-buffer)
               )
             )
         (message "Not visiting a file."))
     (message "Not a TeX file!"))
   )
+
 
 (defun my-make-analysis-dir ()
   (interactive)
