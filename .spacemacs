@@ -33,6 +33,7 @@ values."
    dotspacemacs-configuration-layers
    '(ruby
      javascript
+     java
      lsp
      ;; ipython-notebook
      rust
@@ -76,7 +77,7 @@ values."
                                                          ;; polymode poly-R poly-markdown
                                                          ;; poly-org poly-noweb
                                                          outline-magic
-                                                         ;;(nextflow-mode :location (recipe :fetcher github :repo "jackkamm/nextflow-mode"))
+                                                         (nextflow-mode :location (recipe :fetcher github :repo "jackkamm/nextflow-mode"))
                                                          exec-path-from-shell transpose-frame)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -465,6 +466,8 @@ you should place your code here."
         lsp-clients-clangd-executable "/usr/local/opt/llvm/bin/clangd"
         lsp-clang-executable "/usr/local/opt/llvm/bin/clangd"
         )
+
+  (define-key magit-mode-map (kbd "q") 'delete-frame)
 
   ;; Font
   ;; (add-to-list 'default-frame-alist '(font . "Scurce Code Pro:pixelsize=13"))
