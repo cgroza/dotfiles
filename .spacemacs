@@ -2,7 +2,6 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
-
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration.
 You should not put any user code in this function besides modifying the variable
@@ -34,8 +33,16 @@ values."
    '(ruby
      javascript
      java
-     lsp
-     ;; ipython-notebook
+     (lsp :variables lsp-ui-doc-delay 0.5
+          lsp-ui-doc-position 'bottom
+          lsp-ui-doc-alignment 'window
+          lsp-signature-auto-activate nil
+          lsp-enable-symbol-highlighting nil
+          lsp-rust-server "~/bin/rust-analyzer"
+          lsp-idle-delay 1.0
+          lsp-clients-clangd-executable "/usr/local/opt/llvm/bin/clangd"
+          lsp-clang-executable "/usr/local/opt/llvm/bin/clangd"
+          )
      rust
      common-lisp
      clojure
@@ -44,23 +51,60 @@ values."
      themes-megapack
      html
      csv
-     python
+     (python :variables live-py-version "python3" python-shell-interpreter "ipython")
      (c-c++ :variables c-c++-backend 'lsp-clangd)
-     bibtex
+     (bibtex :variables bibtex-completion-bibliography '("~/Dropbox/Bib/cgroza.bib"))
      pandoc
-     helm
-     latex
+     (helm :variables
+           org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d!)" "CANCELED(c/!)"))
+           org-confirm-babel-evaluate nil
+           ;; inline image width
+           org-image-actual-width 600
+           org-export-with-drawers nil
+           ;; org-startup-indented 't
+           org-startup-indented nil
+           ;; org-indent-indentation-per-level 0
+           ;; org src editing window position
+           org-src-window-setup 'split-window-below
+           ;; to support references in org-mode latex export
+           org-babel-default-header-args '((:tangle . "yes")
+                                           (:async . "yes")
+                                           (:eval . "no-export")
+                                           (:results . "replace")
+                                           (:session . "none")
+                                           (:hlines . "no")
+                                           (:noweb . "no")
+                                           (:cache . "no")
+                                           (:exports . "results")
+                                           ))
+     (latex :variables TeX-view-program-selection '((output-pdf "PDF Tools"))
+            TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+            TeX-source-correlate-start-server t )
      pdf
-     spacemacs-purpose
      auto-completion
      better-defaults
+     (treemacs :variables treemacs-use-follow-mode t treemacs-project-follow-cleanup t)
      emacs-lisp
-     git
+     (git :variables magit-repository-directories '(("~/git" . 1))
+          magit-display-buffer-function #'magit-display-buffer-pop-up-frame)
      markdown
-     (org :variables org-enable-reveal-js-support t org-enable-roam-support t org-enable-roam-protocol t)
-     (ess :variables ess-r-backed 'lsp ess-help-own-frame t)
-     (shell :variables
-            shell-default-height 30
+     (org :variables org-enable-reveal-js-support t
+          org-enable-roam-support t
+          org-enable-roam-protocol t
+          org-directory "~/Dropbox/Org"
+          org-default-notes-file "~/Dropbox/Org/notes.org"
+          org-agenda-files '("~/Dropbox/Org/org-roam"
+                             "~/Dropbox/Org/school.org"
+                             "~/Dropbox/Org/notes.org"
+                             "~/Dropbox/Org/work.org"
+                             "~/Dropbox/Org/personal.org")
+          org-capture-templates ()
+          org-ref-default-bibliography '("~/Dropbox/Bib/cgroza.bib")
+          org-roam-v2-ack t
+          org-roam-directory "~/Dropbox/Org/org-roam"
+          )
+     (ess :variables ess-r-backed 'lsp ess-help-own-frame t ess-eval-visibly 'nowait)
+     (shell :variables shell-default-height 30
             shell-default-position 'bottom)
      spell-checking
      syntax-checking
@@ -78,7 +122,8 @@ values."
                                                          ;; poly-org poly-noweb
                                                          outline-magic
                                                          (nextflow-mode :location (recipe :fetcher github :repo "jackkamm/nextflow-mode"))
-                                                         exec-path-from-shell transpose-frame)
+                                                         exec-path-from-shell transpose-frame
+                                                         (twauctex :location (recipe :fetcher github :repo "cgroza/twauctex" )))
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -135,6 +180,7 @@ values."
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
    dotspacemacs-startup-banner 'official
+   dotspacemacs-startup-banner-scale 'auto
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
@@ -152,9 +198,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(modus-operandi
-                         modus-vivendi
-                         darkokai
+   dotspacemacs-themes '(darkokai
                          solarized-light
                          solarized-dark
                          spacemacs-dark
@@ -322,23 +366,17 @@ values."
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
-   org-ref-default-bibliography '("~/Dropbox/Bib/cgroza.bib")
    evil-want-Y-yank-to-eol nil
-   org-roam-v2-ack t
-   org-directory "~/Dropbox/Org"
-   org-default-notes-file "work.org"
-   org-agenda-files '("~/Dropbox/Org/org-roam")
-   org-capture-templates ()))
-
+   ))
 
 (defun magit-display-buffer-pop-up-frame (buffer)
   (if (with-current-buffer buffer (eq major-mode 'magit-status-mode))
-      (display-buffer buffer
+      (progn (display-buffer buffer
                       '((display-buffer-reuse-window
                          display-buffer-pop-up-frame)
                         (reusable-frames . t)))
-    (magit-display-buffer-traditional buffer)))
-
+             )
+    (magit-display-buffer-fullframe-status-v1 buffer)))
 
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
@@ -361,30 +399,9 @@ you should place your code here."
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize))
 
-  ;; to use pdfview with auctex
-  (with-eval-after-load 'reftex
-    (add-to-list 'reftex-default-bibliography "~/Dropbox/Bib/cgroza.bib")
-  )
-
-  ;; helm bibtex
-  (with-eval-after-load 'helm-bibtex
-    (setq bibtex-completion-bibliography '("~/Dropbox/Bib/cgroza.bib"))
-  )
-
   ;; custom key bindings
   (define-key evil-normal-state-map (kbd "SPC '") 'my-shell)
   ;; (global-set-key (kbd "<f5>") 'yas-expand)
-
-  ;; yasnippets
-  (yas-global-mode t)
-
-  (setq lsp-signature-auto-activate nil
-        lsp-enable-symbol-highlighting nil)
-
-  (with-eval-after-load 'lsp-ui
-    (setq lsp-ui-doc-delay 0.5
-          lsp-ui-doc-position 'bottom
-          lsp-ui-doc-alignment 'window))
 
   ;; asynchronous execution of code blocks
   ;; org babel languages
@@ -394,32 +411,6 @@ you should place your code here."
                                  ;; (ipython . t)
                                  (emacs-lisp . t)))
 
-  (setq org-confirm-babel-evaluate nil
-        ;; inline image width
-        org-image-actual-width 600
-        org-export-with-drawers nil
-        ;; org-startup-indented 't
-        org-startup-indented nil
-        ;; org-indent-indentation-per-level 0
-        ;; org src editing window position
-        org-src-window-setup 'split-window-below
-        ;; to support references in org-mode latex export
-        org-babel-default-header-args '((:tangle . "yes")
-                                        (:async . "yes")
-                                        (:eval . "no-export")
-                                        (:results . "replace")
-                                        (:session . "none")
-                                        (:hlines . "no")
-                                        (:noweb . "no")
-                                        (:cache . "no")
-                                        (:exports . "results")
-                                        )
-        )
-
-  ;; (push '("b" "Brain" plain (function org-brain-goto-end)
-  ;;         "* %i%?" :empty-lines 1)
-  ;;       org-capture-templates)
-
   (spacemacs/set-leader-keys-for-major-mode 'python-mode
     "s l" 'python-shell-send-line
     "s L" 'python-shell-send-line-switch)
@@ -428,50 +419,34 @@ you should place your code here."
     "ow" 'writeroom-mode
     "ot" 'transpose-frame
     "oT" 'treemacs
-    "oa" 'my-make-analysis-dir
-    "op" 'my-publish-pdf
     "om" 'imenu-list-minor-mode
     "ob" 'helm-bibtex-with-local-bibliography
     "-" 'imenu-list-show
     "ol" 'my-cleanup-latex
     )
-  (setq org-roam-directory "~/Dropbox/Org/org-roam")
 
   ;; user defined variables
-  (setq lsp-rust-server "~/bin/rust-analyzer"
-        lsp-idle-delay 1.0
+  (setq projectile-switch-project-action 'projectile-dired
         read-process-output-max (* 1024 1024)
         c-default-style "gnu"
-        python-shell-interpreter "ipython"
-        my-analysis-dir  "~/analysis/"
-        my-publish-pdf-dir "~/git/wikicgroza/slides/"
         evil-want-Y-yank-to-eol nil
-        ess-eval-visibly 'nowait
-        live-py-version "python3"
         compilation-scroll-output t
-        magit-repository-directories '(("~/git" . 1))
-        magit-display-buffer-function #'magit-display-buffer-pop-up-frame
         ;; file associations
         auto-mode-alist
-        (append
-         '(("\\.tut$" . tutch-mode)
-           ("\\.req$" . tutch-mode)
-           ("\\.nf$" . nextflow-mode))
-         auto-mode-alist)
-        ;; TeX
-        TeX-view-program-selection '((output-pdf "PDF Tools"))
-        TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-        TeX-source-correlate-start-server t ;; not sure if last line is neccessary
-        ;; LSP
-        lsp-clients-clangd-executable "/usr/local/opt/llvm/bin/clangd"
-        lsp-clang-executable "/usr/local/opt/llvm/bin/clangd"
-        )
+        (append '(("\\.nf$" . nextflow-mode)) auto-mode-alist)
+        winum-scope 'frame-local)
 
-  (define-key magit-mode-map (kbd "q") 'delete-frame)
+  ;; to use pdfview with auctex
+  (with-eval-after-load 'reftex
+    (add-to-list 'reftex-default-bibliography "~/Dropbox/Bib/cgroza.bib"))
+  (with-eval-after-load 'magit
+                    (define-key magit-mode-map (kbd "q") 'delete-frame))
+  ;; outline mode keybind for section hide/cycle
+  (with-eval-after-load 'outline
+    '(progn (require 'outline-magic)
+            (define-key outline-minor-mode-map (kbd "<C-tab>") 'outline-cycle)))
 
-  ;; Font
-  ;; (add-to-list 'default-frame-alist '(font . "Scurce Code Pro:pixelsize=13"))
-
+  ;; Hooks
   ;; auto hide compilation buffer when successful
   (add-hook 'compilation-finish-functions
             (lambda (buf str)
@@ -483,19 +458,6 @@ you should place your code here."
                      (get-buffer-create "*compilation*"))
                     (message "No Compilation Errors!")))))
 
-  ;; outline mode keybind for section hide/cycle
-  (eval-after-load 'outline
-    '(progn
-       (require 'outline-magic)
-       (define-key outline-minor-mode-map (kbd "<C-tab>") 'outline-cycle)))
-
-  (add-to-list 'load-path "~/git/twauctex/")
-  (require 'twauctex)
-  (twauctex-global-mode)
-
-  (setq winum-scope 'frame-local)
-
-  ;; Hooks
   ;; (remove-hook 'org-mode-hook 'poly-org-mode)
   ;; outline for folding sections
   (add-hook 'TeX-mode-hook 'outline-minor-mode)
@@ -511,6 +473,9 @@ you should place your code here."
   (global-hl-line-mode -1)
   (global-visual-fill-column-mode -1)
   (global-eldoc-mode -1)
+  (twauctex-global-mode)
+  (yas-global-mode t)
+
   (spacemacs/toggle-maximize-frame-on)
 )
 
@@ -556,35 +521,10 @@ Assumes that all referenced file paths are relative to the directory of the TeX 
     (message "Not a TeX file!"))
   )
 
-
-(defun my-make-analysis-dir ()
-  (interactive)
-  (let* ((dir (read-file-name "Analysis directory" my-analysis-dir))
-         (date (car (split-string (shell-command-to-string "date +%d_%m_%Y") )))
-         (full-path (concat dir "_" date "/"))
-         (file-name (concat full-path
-                            (file-name-nondirectory (directory-file-name (file-name-directory full-path)))
-                            ".org")))
-
-         (make-directory full-path)
-         (magit-init full-path)
-         (find-file file-name)
-         (save-buffer)
-         (magit-stage-file file-name)
-         )
-  )
-
 (defun my-shell ()
   (interactive)
   (eshell (generate-new-buffer-name "shell"))
   )
-
-(defun my-publish-pdf ()
-  (interactive)
-  (let ((pdf-path
-         (concat (file-name-sans-extension buffer-file-name) ".pdf")
-         ))
-    (copy-file pdf-path (read-directory-name "Publication directory" my-publish-pdf-dir) 1)))
 
 (defun python-shell-send-line ()
   (interactive)
@@ -595,7 +535,6 @@ Assumes that all referenced file paths are relative to the directory of the TeX 
   (python-shell-send-string (thing-at-point 'line t))
   (python-shell-switch-to-shell)
   )
-
 
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
@@ -611,8 +550,9 @@ This function is called at the very end of Spacemacs initialization."
  '(evil-undo-system 'undo-tree)
  '(evil-want-Y-yank-to-eol nil)
  '(flycheck-lintr-linters "with_defaults(line_length_linter(120))")
+ '(org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
  '(package-selected-packages
-   '(org-roam ob-ess-julia seeing-is-believing rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocopfmt rubocop rspec-mode robe rbenv rake minitest helm-gtags ggtags enh-ruby-mode counsel-gtags counsel swiper chruby bundler inf-ruby add-node-modules-path yasnippet-snippets vterm live-py-mode link-hint hungry-delete google-translate forge magit editorconfig company blacken apropospriate-theme anaconda-mode helm lsp-mode treemacs posframe projectile bibtex-completion modus-themes all-the-icons which-key evil zenburn-theme zen-and-art-theme yapfify yaml-mode xterm-color ws-butler writeroom-mode winum white-sand-theme web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill undo-tree underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil transpose-frame toxi-theme toml-mode toc-org terminal-here tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon symbol-overlay sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection string-edit sphinx-doc spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode ron-mode reverse-theme restart-emacs rebecca-theme rainbow-delimiters railscasts-theme racer pytest pyenv-mode py-isort purple-haze-theme pug-mode professional-theme prettier-js popwin poetry planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme pdf-view-restore pcre2el password-generator parsebib paradox pandoc-mode ox-pandoc overseer outline-magic orgit-forge organic-green-theme org-superstar org-rich-yank org-ref org-re-reveal org-projectile org-present org-pomodoro org-mime org-download org-cliplink org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-async npm-mode nose nodejs-repl noctilux-theme naquadah-theme nameless mwim mustang-theme multi-term multi-line monokai-theme monochrome-theme molokai-theme moe-theme modus-vivendi-theme modus-operandi-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-svn magit-section magit-gitflow madhat2r-theme macrostep lush-theme lsp-ui lsp-python-ms lsp-pyright lsp-origami lsp-latex lorem-ipsum livid-mode light-soap-theme kaolin-themes json-navigator json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme indent-guide importmagic impatient-mode hybrid-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme groovy-mode groovy-imports grandshell-theme goto-chg gotham-theme google-c-style golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ ghub gh-md gandalf-theme fuzzy font-lock+ flyspell-correct-helm flycheck-ycmd flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-package flycheck-elsa flx-ido flatui-theme flatland-theme farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-snipe evil-org evil-numbers evil-nerd-commenter evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu ess-R-data-view espresso-theme eshell-z eshell-prompt-extras esh-help emr emmet-mode elisp-slime-nav dumb-jump drag-stuff dracula-theme dotenv-mode doom-themes django-theme disaster dired-rsync dired-quick-sort diminish devdocs define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dap-mode dakrone-theme cython-mode cyberpunk-theme csv-mode cpp-auto-include company-ycmd company-web company-rtags company-reftex company-math company-c-headers company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme closql clean-aindent-mode chocolate-theme cherry-blossom-theme cfrs centered-cursor-mode ccls cargo busybee-theme bubbleberry-theme browse-at-remote birds-of-paradise-plus-theme biblio badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme ace-window ace-link ace-jump-helm-line ac-ispell))
+   '(org-roam ob-ess-julia seeing-is-believing rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocopfmt rubocop rspec-mode robe rbenv rake minitest helm-gtags ggtags enh-ruby-mode counsel-gtags counsel swiper chruby bundler inf-ruby add-node-modules-path yasnippet-snippets vterm live-py-mode link-hint hungry-delete google-translate forge magit editorconfig company blacken apropospriate-theme anaconda-mode helm lsp-mode treemacs posframe projectile bibtex-completion modus-themes all-the-icons which-key evil zenburn-theme zen-and-art-theme yapfify yaml-mode xterm-color ws-butler writeroom-mode winum white-sand-theme web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill undo-tree underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil transpose-frame toxi-theme toml-mode toc-org terminal-here tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon symbol-overlay sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection string-edit sphinx-doc spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode ron-mode reverse-theme restart-emacs rebecca-theme rainbow-delimiters railscasts-theme racer pytest pyenv-mode py-isort purple-haze-theme pug-mode professional-theme prettier-js popwin poetry planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme pdf-view-restore pcre2el password-generator parsebib paradox pandoc-mode ox-pandoc overseer outline-magic orgit-forge organic-green-theme org-superstar org-rich-yank org-ref org-re-reveal org-projectile org-present org-pomodoro org-mime org-download org-cliplink open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-async npm-mode nose nodejs-repl noctilux-theme naquadah-theme nameless mwim mustang-theme multi-term multi-line monokai-theme monochrome-theme molokai-theme moe-theme modus-vivendi-theme modus-operandi-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-svn magit-section magit-gitflow madhat2r-theme macrostep lush-theme lsp-ui lsp-python-ms lsp-pyright lsp-origami lsp-latex lorem-ipsum livid-mode light-soap-theme kaolin-themes json-navigator json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme indent-guide importmagic impatient-mode hybrid-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme groovy-mode groovy-imports grandshell-theme goto-chg gotham-theme google-c-style golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ ghub gh-md gandalf-theme fuzzy font-lock+ flyspell-correct-helm flycheck-ycmd flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-package flycheck-elsa flx-ido flatui-theme flatland-theme farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-snipe evil-org evil-numbers evil-nerd-commenter evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu ess-R-data-view espresso-theme eshell-z eshell-prompt-extras esh-help emr emmet-mode elisp-slime-nav dumb-jump drag-stuff dracula-theme dotenv-mode doom-themes django-theme disaster dired-rsync dired-quick-sort diminish devdocs define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dap-mode dakrone-theme cython-mode cyberpunk-theme csv-mode cpp-auto-include company-ycmd company-web company-rtags company-reftex company-math company-c-headers company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme closql clean-aindent-mode chocolate-theme cherry-blossom-theme cfrs centered-cursor-mode ccls cargo busybee-theme bubbleberry-theme browse-at-remote birds-of-paradise-plus-theme biblio badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme ace-window ace-link ace-jump-helm-line ac-ispell))
  '(prog-mode-hook
    '(spacemacs/load-yasnippet spacemacs//trailing-whitespace rainbow-delimiters-mode spacemacs//enable-hs-minor-mode highlight-parentheses-mode highlight-numbers-mode flyspell-prog-mode spacemacs//load-evil-lisp-state bug-reference-prog-mode goto-address-prog-mode spacemacs//put-clean-aindent-last))
  '(safe-local-variable-values
@@ -621,6 +561,7 @@ This function is called at the very end of Spacemacs initialization."
      (javascript-backend . tide)
      (javascript-backend . tern)
      (javascript-backend . lsp)))
+ '(warning-suppress-types '((use-package) (use-package)))
  '(writeroom-global-effects
    '(writeroom-set-alpha writeroom-set-menu-bar-lines writeroom-set-tool-bar-lines writeroom-set-vertical-scroll-bars writeroom-set-bottom-divider-width))
  '(writeroom-width 120))
@@ -629,5 +570,5 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(highlight-parentheses-highlight ((nil (:weight ultra-bold))) t))
 )
