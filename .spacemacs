@@ -1,4 +1,3 @@
-;; -*- mode: emacs-lisp -*-
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
@@ -46,7 +45,7 @@ values."
      rust
      common-lisp
      clojure
-     groovy
+     (groovy :variables groovy-indent-offset 2)
      yaml
      themes-megapack
      html
@@ -54,41 +53,10 @@ values."
      (python :variables live-py-version "python3" python-shell-interpreter "ipython")
      (c-c++ :variables c-c++-backend 'lsp-clangd)
      (bibtex :variables bibtex-completion-bibliography '("~/Dropbox/Bib/cgroza.bib"))
-     pandoc
-     (helm :variables
-           org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d!)" "CANCELED(c/!)"))
-           org-confirm-babel-evaluate nil
-           ;; inline image width
-           org-image-actual-width 600
-           org-export-with-drawers nil
-           ;; org-startup-indented 't
-           org-startup-indented nil
-           ;; org-indent-indentation-per-level 0
-           ;; org src editing window position
-           org-src-window-setup 'split-window-below
-           ;; to support references in org-mode latex export
-           org-babel-default-header-args '((:tangle . "yes")
-                                           (:async . "yes")
-                                           (:eval . "no-export")
-                                           (:results . "replace")
-                                           (:session . "none")
-                                           (:hlines . "no")
-                                           (:noweb . "no")
-                                           (:cache . "no")
-                                           (:exports . "results")
-                                           ))
-     (latex :variables TeX-view-program-selection '((output-pdf "PDF Tools"))
-            TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-            TeX-source-correlate-start-server t )
-     pdf
-     auto-completion
-     better-defaults
-     (treemacs :variables treemacs-use-follow-mode t treemacs-project-follow-cleanup t)
-     emacs-lisp
-     (git :variables magit-repository-directories '(("~/git" . 1))
-          magit-display-buffer-function #'magit-display-buffer-pop-up-frame)
-     markdown
-     (org :variables org-enable-reveal-js-support t
+     (pandoc :variables org-pandoc-options-for-html5 '((standalone . t) (self-contained . t))) 
+     helm
+     (org :variables
+          org-enable-reveal-js-support t
           org-enable-roam-support t
           org-enable-roam-protocol t
           org-directory "~/Dropbox/Org"
@@ -99,10 +67,40 @@ values."
                              "~/Dropbox/Org/work.org"
                              "~/Dropbox/Org/personal.org")
           org-capture-templates ()
+          org-agenda-span 'month
           org-ref-default-bibliography '("~/Dropbox/Bib/cgroza.bib")
           org-roam-v2-ack t
           org-roam-directory "~/Dropbox/Org/org-roam"
-          )
+          org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d!)" "CANCELED(c/!)"))
+          org-confirm-babel-evaluate nil
+          ;; inline image width
+          org-image-actual-width 600
+          org-export-with-drawers nil
+          org-startup-indented nil
+          ;; org src editing window position
+          org-src-window-setup 'split-window-below
+          ;; to support references in org-mode latex export
+          org-babel-default-header-args '((:tangle . "yes")
+                                          (:async . "yes")
+                                          (:eval . "no-export")
+                                          (:results . "replace")
+                                          (:session . "none")
+                                          (:hlines . "no")
+                                          (:noweb . "no")
+                                          (:cache . "no")
+                                          (:exports . "results")
+                                          ))
+     (latex :variables TeX-view-program-selection '((output-pdf "PDF Tools"))
+            TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+            TeX-source-correlate-start-server t )
+     pdf
+     (auto-completion :variables auto-completion-return-key-behavior 'complete)
+     better-defaults
+     (treemacs :variables treemacs-use-follow-mode t treemacs-project-follow-cleanup t)
+     emacs-lisp
+     (git :variables magit-repository-directories '(("~/git" . 1))
+          magit-display-buffer-function #'magit-display-buffer-pop-up-frame)
+     markdown
      (ess :variables ess-r-backed 'lsp ess-help-own-frame t ess-eval-visibly 'nowait)
      (shell :variables shell-default-height 30
             shell-default-position 'bottom)
@@ -110,7 +108,9 @@ values."
      syntax-checking
      version-control
      evil-snipe
-     )
+     (languagetool :variables langtool-default-language "en-CA"
+                   langtool-language-tool-jar "/usr/local/Cellar/languagetool/5.9/libexec/languagetool-commandline.jar"
+                   ))
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
@@ -159,7 +159,7 @@ values."
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
    ;; whenever you start Emacs. (default nil)
-   dotspacemacs-check-for-update t
+   dotspacemacs-check-for-update nil
    ;; If non-nil, a form that evaluates to a package directory. For example, to
    ;; use different package directories for different Emacs versions, set this
    ;; to `emacs-version'.
