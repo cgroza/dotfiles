@@ -36,6 +36,7 @@ values."
       smtpmail-smtp-server "smtp.gmail.com" ; host running SMTP server
       smtpmail-smtp-service 587               ; SMTP service port number
       smtpmail-stream-type 'starttls          ; type of SMTP connections to use
+      user-mail-address "cristian.groza.mcgill@gmail.com"
       mu4e-spacemacs-layout-name "@Mu4e"
       mu4e-spacemacs-layout-binding "m"
       mu4e-spacemacs-kill-layout-on-exit t
@@ -134,7 +135,7 @@ values."
      (ess :variables ess-r-backed 'lsp ess-help-own-frame t ess-eval-visibly 'nowait)
      (shell :variables shell-default-height 30
             shell-default-position 'bottom
-            shell-default-shell 'vterm)
+            shell-default-shell 'eshell)
      spell-checking
      syntax-checking
      version-control
@@ -231,7 +232,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(darkokai
+   dotspacemacs-themes '(monokai darkokai
                          solarized-light
                          solarized-dark
                          spacemacs-dark
@@ -433,10 +434,10 @@ you should place your code here."
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize))
 
-
+  (setq warning-minimum-level :error)
 
   ;; custom key bindings
-  (define-key evil-normal-state-map (kbd "SPC '") 'my-shell)
+  ;; (define-key evil-normal-state-map (kbd "SPC '") 'my-shell)
   ;; (global-set-key (kbd "<f5>") 'yas-expand)
 
   (use-package tree-sitter-ess-r :ensure t)
@@ -445,7 +446,6 @@ you should place your code here."
   (setq tree-sitter-langs--queries-dir "~/git/evil-textobj-tree-sitter/queries")
   (define-key evil-outer-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.outer"))
   (define-key evil-outer-text-objects-map "c" (evil-textobj-tree-sitter-get-textobj "call.outer"))
-
 
   (define-key evil-inner-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.inner"))
   (define-key evil-inner-text-objects-map "c" (evil-textobj-tree-sitter-get-textobj "call.inner"))
@@ -562,10 +562,10 @@ Assumes that all referenced file paths are relative to the directory of the TeX 
     (message "Not a TeX file!"))
   )
 
-(defun my-shell ()
-  (interactive)
-  (vterm (generate-new-buffer-name "shell"))
-  )
+;; (defun my-shell ()
+;;   (interactive)
+;;   (eshell (generate-new-buffer-name "shell"))
+;;   )
 
 (defun python-shell-send-line ()
   (interactive)
