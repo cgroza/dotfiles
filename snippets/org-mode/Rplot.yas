@@ -3,6 +3,6 @@
 # key: Rplot
 # --
 
-#+BEGIN_SRC R :exports results :results file graphics :file ${1:plot.pdf} :session ${3:*R-`(buffer-name)`*}
+#+BEGIN_SRC R :exports results :results graphics output file :file ${1:plot.pdf} :session ${3:*R-`(buffer-name)`*}
 $0
 #+END_SRC

@@ -92,11 +92,12 @@ values."
           org-enable-roam-protocol t
           org-directory "~/Dropbox/Org"
           org-default-notes-file "~/Dropbox/Org/notes.org"
-          org-agenda-files '("~/Dropbox/Org/org-roam"
+          org-agenda-filesiles '("~/Dropbox/Org/org-roam"
                              "~/Dropbox/Org/school.org"
                              "~/Dropbox/Org/notes.org"
                              "~/Dropbox/Org/work.org"
                              "~/Dropbox/Org/personal.org")
+          org-roam-db-autosync-enable t
           org-capture-templates ()
           org-agenda-span 'month
           org-ref-default-bibliography '("~/Dropbox/Bib/cgroza.bib")
@@ -118,7 +119,7 @@ values."
                                           (:session . "none")
                                           (:hlines . "no")
                                           (:noweb . "no")
-                                          (:cache . "no")
+                                          (:cache . "yes")
                                           (:exports . "results")
                                           ))
      (latex :variables TeX-view-program-selection '((output-pdf "PDF Tools"))
@@ -241,7 +242,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
+   dotspacemacs-default-font '("Monaco"
                                :size 14
                                :weight normal
                                :width normal
@@ -466,11 +467,29 @@ you should place your code here."
     "ow" 'writeroom-mode
     "ot" 'transpose-frame
     "oT" 'treemacs
-    "om" 'imenu-list-minor-mode
     "ob" 'helm-bibtex-with-local-bibliography
-    "-" 'imenu-list-show
+    "-" 'imenu-list-minor-mode
     "ol" 'my-cleanup-latex
     )
+
+  ;; org roam
+  (spacemacs/declare-prefix
+    "or"  "org-roam"
+    "ord" "org-roam-dailies"
+    "ort" "org-roam-tags")
+  (spacemacs/set-leader-keys
+    "ordy" 'org-roam-dailies-goto-yesterday
+    "ordt" 'org-roam-dailies-goto-today
+    "ordT" 'org-roam-dailies-goto-tomorrow
+    "ordd" 'org-roam-dailies-goto-date
+    "orc" 'org-roam-capture
+    "orf" 'org-roam-node-find
+    "org" 'org-roam-graph
+    "ori" 'org-roam-node-insert
+    "orl" 'org-roam-buffer-toggle
+    "orta" 'org-roam-tag-add
+    "ortr" 'org-roam-tag-remove
+    "ora" 'org-roam-alias-add)
 
   ;; user defined variables
   (setq projectile-switch-project-action 'projectile-dired
