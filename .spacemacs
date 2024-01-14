@@ -86,7 +86,9 @@ values."
              python-lsp-server 'pylsp
              python-shell-interpreter-args "-i --simple-prompt")
      (c-c++ :variables c-c++-backend 'lsp-clangd)
-     (bibtex :variables bibtex-completion-bibliography '("~/Dropbox/Bib/cgroza.bib"))
+     (bibtex :variables
+             bibtex-completion-cite-prompt-for-optional-arguments nil
+             bibtex-completion-bibliography '("~/Dropbox/Bib/cgroza.bib"))
      (pandoc :variables org-pandoc-options-for-html5 '((standalone . t) (self-contained . t))) 
      helm
      outshine
@@ -165,7 +167,7 @@ values."
                                                          (nextflow-mode :location (recipe :fetcher github :repo "jackkamm/nextflow-mode"))
                                                          exec-path-from-shell transpose-frame
                                                          (twauctex :location (recipe :fetcher github :repo "cgroza/twauctex" ))
-                                                         polymode poly-R poly-noweb poly-markdown poly-org
+                                                         ;; ;; polymode poly-R poly-noweb poly-markdown poly-org
                                                          )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -394,7 +396,7 @@ values."
    dotspacemacs-highlight-delimiters 'all
    ;; If non nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
-   dotspacemacs-persistent-server nil
+   dotspacemacs-persistent-server t
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
    ;; (default '("ag" "pt" "ack" "grep"))
@@ -469,6 +471,8 @@ you should place your code here."
                                  (python . t)
                                  (emacs-lisp . t)))
 
+  (global-set-key [f5] 'avy-pop-mark)
+
   (spacemacs/set-leader-keys-for-major-mode 'python-mode
     "s l" 'python-shell-send-line
     "s L" 'python-shell-send-line-switch)
@@ -478,6 +482,7 @@ you should place your code here."
     "ot" 'transpose-frame
     "oT" 'treemacs
     "ob" 'helm-bibtex-with-local-bibliography
+    "of" 'helm-bibtex-follow
     "-" 'imenu-list-minor-mode
     "ol" 'my-cleanup-latex
     )
@@ -487,6 +492,7 @@ you should place your code here."
     "or"  "org-roam"
     "ord" "org-roam-dailies"
     "ort" "org-roam-tags")
+
   (spacemacs/set-leader-keys
     "ordy" 'org-roam-dailies-goto-yesterday
     "ordt" 'org-roam-dailies-goto-today
@@ -499,7 +505,9 @@ you should place your code here."
     "orl" 'org-roam-buffer-toggle
     "orta" 'org-roam-tag-add
     "ortr" 'org-roam-tag-remove
-    "ora" 'org-roam-alias-add)
+    "ora" 'org-roam-alias-add
+    "ors" 'helm-ag-org-roam
+    )
 
   ;; user defined variables
   (setq projectile-switch-project-action 'projectile-dired
@@ -517,6 +525,20 @@ you should place your code here."
     (add-to-list 'reftex-default-bibliography "~/Dropbox/Bib/cgroza.bib"))
   (with-eval-after-load 'magit
                     (define-key magit-mode-map (kbd "q") 'delete-frame))
+
+  (with-eval-after-load 'helm-bibtex
+    (helm-delete-action-from-source "Insert Citation" helm-source-bibtex)
+    (helm-add-action-to-source "Insert Citation"
+                               'helm-bibtex-insert-citation 
+                               helm-source-bibtex 0)
+    (setq helm-bibtex-follow-actions-alist '(
+           ("Open URL or DOI in browser" . bibtex-completion-open-url-or-doi)
+           ("Open PDF, URL or DOI" . bibtex-completion-open-pdf)
+           ("Edit notes" . bibtex-completion-edit-notes)
+           ("Show entry" . bibtex-completion-show-entry)
+           ("Add PDF to library" . bibtex-completion-add-pdf-to-library)))
+    )
+
 
   (use-package poly-org
     :ensure t)
@@ -550,6 +572,7 @@ you should place your code here."
   (yas-global-mode t)
   (global-tree-sitter-mode)
   (spacemacs/toggle-maximize-frame-on)
+  (server-start)
 )
 
 (defvar my-latex-cleanup-referenced-files
@@ -598,6 +621,11 @@ Assumes that all referenced file paths are relative to the directory of the TeX 
 ;;   (interactive)
 ;;   (eshell (generate-new-buffer-name "shell"))
 ;;   )
+
+(defun helm-ag-org-roam ()
+  "Search in current directory with `ag'."
+  (interactive)
+  (spacemacs/helm-files-do-ag org-roam-directory))
 
 (defun python-shell-send-line ()
   (interactive)
