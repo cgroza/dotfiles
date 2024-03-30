@@ -162,6 +162,7 @@ values."
                                                          ob-async
                                                          mu4e-alert
                                                          (citar)
+                                                         (citar-embark)
                                                          (evil-textobj-tree-sitter :location (recipe
                                                                                               :fetcher github
                                                                                               :repo "meain/evil-textobj-tree-sitter"))
@@ -452,8 +453,9 @@ you should place your code here."
   (define-key evil-inner-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.inner"))
   (define-key evil-inner-text-objects-map "c" (evil-textobj-tree-sitter-get-textobj "call.inner"))
 
+  (global-set-key (kbd "C-.") (lambda () (interactive) (embark-select) (vertico-next)))
   ;; asynchronous execution of code blocks
-  ;; org babel languages
+  ;; org babel languages 
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((shell . t)
                                  (R . t)
@@ -514,11 +516,23 @@ you should place your code here."
   (with-eval-after-load 'magit
                     (define-key magit-mode-map (kbd "q") 'delete-frame))
 
-  (with-eval-after-load 'citar
-    (setq citar-bibliography '("/Users/cgroza/Library/CloudStorage/Dropbox/Bib/cgroza.bib")
-          bibtex-completion-cite-prompt-for-optional-arguments nil)
-    (add-hook 'LaTeX-mode 'citar-capf-setup)
-    (add-hook 'org-mode 'citar-capf-setup))
+  (use-package embark-consult
+    :ensure t ; only need to install it, embark loads it after consult if found
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode))
+
+  (use-package citar
+    :custom
+    (citar-bibliography '("/Users/cgroza/Library/CloudStorage/Dropbox/Bib/cgroza.bib"))
+    (bibtex-completion-cite-prompt-for-optional-arguments nil)
+    :hook
+    (LaTeX-mode . citar-capf-setup)
+    (org-mode . citar-capf-setup))
+
+  (use-package citar-embark
+    :after citar embark
+    :no-require
+    :config (citar-embark-mode))
 
   (use-package poly-org
     :ensure t)
