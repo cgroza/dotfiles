@@ -32,36 +32,36 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '((mu4e :variables
-      mu4e-installation-path "/usr/local/share/emacs/site-lisp/mu/mu4e"
-      ;; This is set to 't' to avoid mail syncing issues when using mbsync
-      send-mail-function 'smtpmail-send-it    ; should not be modified
-      smtpmail-smtp-server "smtp.gmail.com" ; host running SMTP server
-      smtpmail-smtp-service 587               ; SMTP service port number
-      smtpmail-stream-type 'starttls          ; type of SMTP connections to use
-      user-mail-address "cristian.groza.mcgill@gmail.com"
-      mu4e-spacemacs-layout-name "@Mu4e"
-      mu4e-spacemacs-layout-binding "m"
-      mu4e-spacemacs-kill-layout-on-exit t
-      org-mu4e-compose-org-mode t
-      org-mu4e-convert-to-html t
-      mu4e-change-filenames-when-moving t
-      mu4e-update-interval (* 3 60)
-      mu4e-headers-auto-update t                ; avoid to type `g' to update
-      mu4e-view-show-images t                   ; show images in the view buffer
-      mu4e-compose-signature-auto-include nil   ; I don't want a message signature
-      mu4e-use-fancy-chars t                   ; allow fancy icons for mail threads
-      mu4e-org-compose-support t
-      org-mu4e-convert-to-html t
-      mu4e-enable-mode-line t
-      mu4e-enable-notifications t
-      mu4e-enable-async-operations t
-      mu4e-sent-messages-behavior 'delete
-      mu4e-get-mail-command "mbsync -a"
-      mu4e-maildir "~/email/mbsyncmail"
-      mu4e-drafts-folder "/[Gmail]/Drafts"
-      mu4e-sent-folder   "/[Gmail]/Sent Mail"
-      mu4e-refile-folder "/[Gmail]/All Mail"
-      mu4e-trash-folder  "/[Gmail]/Trash")
+           mu4e-installation-path "/usr/local/share/emacs/site-lisp/mu/mu4e"
+           ;; This is set to 't' to avoid mail syncing issues when using mbsync
+           send-mail-function 'smtpmail-send-it    ; should not be modified
+           smtpmail-smtp-server "smtp.gmail.com" ; host running SMTP server
+           smtpmail-smtp-service 587               ; SMTP service port number
+           smtpmail-stream-type 'starttls          ; type of SMTP connections to use
+           user-mail-address "cristian.groza.mcgill@gmail.com"
+           mu4e-spacemacs-layout-name "@Mu4e"
+           mu4e-spacemacs-layout-binding "m"
+           mu4e-spacemacs-kill-layout-on-exit t
+           org-mu4e-compose-org-mode t
+           org-mu4e-convert-to-html t
+           mu4e-change-filenames-when-moving t
+           mu4e-update-interval (* 3 60)
+           mu4e-headers-auto-update t                ; avoid to type `g' to update
+           mu4e-view-show-images t                   ; show images in the view buffer
+           mu4e-compose-signature-auto-include nil   ; I don't want a message signature
+           mu4e-use-fancy-chars t                   ; allow fancy icons for mail threads
+           mu4e-org-compose-support t
+           org-mu4e-convert-to-html t
+           mu4e-enable-mode-line t
+           mu4e-enable-notifications t
+           mu4e-enable-async-operations t
+           mu4e-sent-messages-behavior 'delete
+           mu4e-get-mail-command "mbsync -a"
+           mu4e-maildir "~/email/mbsyncmail"
+           mu4e-drafts-folder "/[Gmail]/Drafts"
+           mu4e-sent-folder   "/[Gmail]/Sent Mail"
+           mu4e-refile-folder "/[Gmail]/All Mail"
+           mu4e-trash-folder  "/[Gmail]/Trash")
      javascript
      java
      (lsp :variables lsp-ui-doc-delay 0.5
@@ -91,7 +91,7 @@ This function should only modify configuration layer settings."
      (bibtex :variables
              bibtex-completion-cite-prompt-for-optional-arguments nil
              bibtex-completion-bibliography '("/Users/cgroza/Library/CloudStorage/Dropbox/Bib/cgroza.bib"))
-     (pandoc :variables org-pandoc-options-for-html5 '((standalone . t) (self-contained . t))) 
+     (pandoc :variables org-pandoc-options-for-html5 '((standalone . t) (self-contained . t)))
      compleseus
      outshine
      (org :variables
@@ -141,7 +141,6 @@ This function should only modify configuration layer settings."
      (treemacs :variables treemacs-use-follow-mode t treemacs-project-follow-cleanup t)
      emacs-lisp
      (git :variables magit-repository-directories '(("~/git" . 1))
-          magit-display-buffer-function #'magit-display-buffer-pop-up-frame
           vc-follow-symlinks t)
      markdown
      (ess :variables ess-r-backed 'lsp ess-help-own-frame t ess-eval-visibly 'nowait)
@@ -176,6 +175,8 @@ This function should only modify configuration layer settings."
                                                          )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
+
+   dotspacemacs-undo-system 'undo-fu
 
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '(smartparens evil-escape)
@@ -562,15 +563,6 @@ It should only modify the values of Spacemacs settings."
    evil-want-Y-yank-to-eol nil
    ))
 
-(defun magit-display-buffer-pop-up-frame (buffer)
-  (if (with-current-buffer buffer (eq major-mode 'magit-status-mode))
-      (progn (display-buffer buffer
-                      '((display-buffer-reuse-window
-                         display-buffer-pop-up-frame)
-                        (reusable-frames . t)))
-             )
-    (magit-display-buffer-fullframe-status-v1 buffer)))
-
 (defun dotspacemacs/user-init ()
   "Initialization function for user code.
 It is called immediately after `dotspacemacs/init', before layer configuration
@@ -612,12 +604,12 @@ you should place your code here."
   (define-key evil-inner-text-objects-map "c" (evil-textobj-tree-sitter-get-textobj "call.inner"))
 
   (define-key vertico-map (kbd "C-.") (lambda ()
-                                (interactive)
-                                (embark-select)
-                                (vertico-next)))
+                                        (interactive)
+                                        (embark-select)
+                                        (vertico-next)))
 
   ;; asynchronous execution of code blocks
-  ;; org babel languages 
+  ;; org babel languages
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((shell . t)
                                  (R . t)
@@ -675,8 +667,6 @@ you should place your code here."
   ;; to use pdfview with auctex
   (with-eval-after-load 'reftex
     (add-to-list 'reftex-default-bibliography "~/Dropbox/Bib/cgroza.bib"))
-  (with-eval-after-load 'magit
-                    (define-key magit-mode-map (kbd "q") 'delete-frame))
 
   (use-package embark-consult
     :ensure t ; only need to install it, embark loads it after consult if found
@@ -729,7 +719,7 @@ you should place your code here."
   (global-tree-sitter-mode)
   (spacemacs/toggle-maximize-frame-on)
   (server-start)
-)
+  )
 
 (defvar my-latex-cleanup-referenced-files
   "\\\\\\(includegraphics\\|addbibresource\\|include\\)\\(\\[.*\\]\\)?{\\(.*\\)}"
@@ -792,131 +782,3 @@ Assumes that all referenced file paths are relative to the directory of the TeX 
   (python-shell-send-string (thing-at-point 'line t))
   (python-shell-switch-to-shell)
   )
-
-(defun dotspacemacs/emacs-custom-settings ()
-  "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(connection-local-criteria-alist
-   '(((:application eshell)
-      eshell-connection-default-profile)
-     ((:application tramp :machine "localhost")
-      tramp-connection-local-darwin-ps-profile)
-     ((:application tramp :machine "mallow.local")
-      tramp-connection-local-darwin-ps-profile)
-     ((:application tramp)
-      tramp-connection-local-default-system-profile tramp-connection-local-default-shell-profile)))
- '(connection-local-profile-alist
-   '((eshell-connection-default-profile
-      (eshell-path-env-list))
-     (tramp-connection-local-darwin-ps-profile
-      (tramp-process-attributes-ps-args "-acxww" "-o" "pid,uid,user,gid,comm=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" "-o" "state=abcde" "-o" "ppid,pgid,sess,tty,tpgid,minflt,majflt,time,pri,nice,vsz,rss,etime,pcpu,pmem,args")
-      (tramp-process-attributes-ps-format
-       (pid . number)
-       (euid . number)
-       (user . string)
-       (egid . number)
-       (comm . 52)
-       (state . 5)
-       (ppid . number)
-       (pgrp . number)
-       (sess . number)
-       (ttname . string)
-       (tpgid . number)
-       (minflt . number)
-       (majflt . number)
-       (time . tramp-ps-time)
-       (pri . number)
-       (nice . number)
-       (vsize . number)
-       (rss . number)
-       (etime . tramp-ps-time)
-       (pcpu . number)
-       (pmem . number)
-       (args)))
-     (tramp-connection-local-busybox-ps-profile
-      (tramp-process-attributes-ps-args "-o" "pid,user,group,comm=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" "-o" "stat=abcde" "-o" "ppid,pgid,tty,time,nice,etime,args")
-      (tramp-process-attributes-ps-format
-       (pid . number)
-       (user . string)
-       (group . string)
-       (comm . 52)
-       (state . 5)
-       (ppid . number)
-       (pgrp . number)
-       (ttname . string)
-       (time . tramp-ps-time)
-       (nice . number)
-       (etime . tramp-ps-time)
-       (args)))
-     (tramp-connection-local-bsd-ps-profile
-      (tramp-process-attributes-ps-args "-acxww" "-o" "pid,euid,user,egid,egroup,comm=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" "-o" "state,ppid,pgid,sid,tty,tpgid,minflt,majflt,time,pri,nice,vsz,rss,etimes,pcpu,pmem,args")
-      (tramp-process-attributes-ps-format
-       (pid . number)
-       (euid . number)
-       (user . string)
-       (egid . number)
-       (group . string)
-       (comm . 52)
-       (state . string)
-       (ppid . number)
-       (pgrp . number)
-       (sess . number)
-       (ttname . string)
-       (tpgid . number)
-       (minflt . number)
-       (majflt . number)
-       (time . tramp-ps-time)
-       (pri . number)
-       (nice . number)
-       (vsize . number)
-       (rss . number)
-       (etime . number)
-       (pcpu . number)
-       (pmem . number)
-       (args)))
-     (tramp-connection-local-default-shell-profile
-      (shell-file-name . "/bin/sh")
-      (shell-command-switch . "-c"))
-     (tramp-connection-local-default-system-profile
-      (path-separator . ":")
-      (null-device . "/dev/null"))))
- '(evil-move-beyond-eol t)
- '(evil-undo-system 'undo-tree)
- '(evil-want-Y-yank-to-eol nil)
- '(flycheck-lintr-linters "with_defaults(line_length_linter(120))")
- '(lsp-ui-sideline-enable nil)
- '(org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
- '(package-selected-packages
-   '(citar poly-R poly-markdown poly-noweb poly-org polymode helm-mu mu4e-alert mu4e-maildirs-extension org-roam ob-ess-julia seeing-is-believing rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocopfmt rubocop rspec-mode robe rbenv rake minitest helm-gtags ggtags enh-ruby-mode counsel-gtags counsel swiper chruby bundler inf-ruby add-node-modules-path yasnippet-snippets vterm live-py-mode link-hint hungry-delete google-translate forge magit editorconfig company blacken apropospriate-theme anaconda-mode helm lsp-mode treemacs posframe projectile bibtex-completion modus-themes all-the-icons which-key evil zenburn-theme zen-and-art-theme yapfify yaml-mode xterm-color ws-butler writeroom-mode winum white-sand-theme web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package unfill undo-tree underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil transpose-frame toxi-theme toml-mode toc-org terminal-here tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon symbol-overlay sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection string-edit sphinx-doc spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode ron-mode reverse-theme restart-emacs rebecca-theme rainbow-delimiters railscasts-theme racer pytest pyenv-mode py-isort purple-haze-theme pug-mode professional-theme prettier-js popwin poetry planet-theme pippel pipenv pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme pdf-view-restore pcre2el password-generator parsebib paradox pandoc-mode ox-pandoc overseer orgit-forge organic-green-theme org-superstar org-rich-yank org-ref org-re-reveal org-projectile org-present org-pomodoro org-mime org-download org-cliplink open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-async npm-mode nose nodejs-repl noctilux-theme naquadah-theme nameless mwim mustang-theme multi-term multi-line monokai-theme monochrome-theme molokai-theme moe-theme modus-vivendi-theme modus-operandi-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-svn magit-section magit-gitflow madhat2r-theme macrostep lush-theme lsp-ui lsp-python-ms lsp-pyright lsp-origami lsp-latex lorem-ipsum livid-mode light-soap-theme kaolin-themes json-navigator json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme indent-guide importmagic impatient-mode hybrid-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme groovy-mode groovy-imports grandshell-theme goto-chg gotham-theme google-c-style golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ ghub gh-md gandalf-theme fuzzy font-lock+ flyspell-correct-helm flycheck-ycmd flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-package flycheck-elsa flx-ido flatui-theme flatland-theme farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-snipe evil-org evil-numbers evil-nerd-commenter evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu ess-R-data-view espresso-theme eshell-z eshell-prompt-extras esh-help emr emmet-mode elisp-slime-nav dumb-jump drag-stuff dracula-theme dotenv-mode doom-themes django-theme disaster dired-rsync dired-quick-sort diminish devdocs define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dap-mode dakrone-theme cython-mode cyberpunk-theme csv-mode cpp-auto-include company-ycmd company-web company-rtags company-reftex company-math company-c-headers company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme closql clean-aindent-mode chocolate-theme cherry-blossom-theme cfrs centered-cursor-mode ccls cargo busybee-theme bubbleberry-theme browse-at-remote birds-of-paradise-plus-theme biblio badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary auto-compile auctex-latexmk anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme ace-window ace-link ace-jump-helm-line ac-ispell))
- '(prog-mode-hook
-   '(spacemacs/load-yasnippet spacemacs//trailing-whitespace rainbow-delimiters-mode spacemacs//enable-hs-minor-mode highlight-parentheses-mode highlight-numbers-mode flyspell-prog-mode spacemacs//load-evil-lisp-state bug-reference-prog-mode goto-address-prog-mode spacemacs//put-clean-aindent-last))
- '(safe-local-variable-values
-   '((org-ref-default-bibliography . /Users/cgroza/git/cgroza.github.io/_bibliography/references.bib)
-     (org-ref-default-bibliography . /Users/cgroza/git/2020_paper/cgroza.bib)
-     (javascript-backend . tide)
-     (javascript-backend . tern)
-     (javascript-backend . lsp)))
- '(send-mail-function 'sendmail-send-it)
- '(warning-suppress-types
-   '((emacsql)
-     (emacsql)
-     (use-package)
-     (use-package)
-     (use-package)))
- '(writeroom-global-effects
-   '(writeroom-set-alpha writeroom-set-menu-bar-lines writeroom-set-tool-bar-lines writeroom-set-vertical-scroll-bars writeroom-set-bottom-divider-width))
- '(writeroom-width 120))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(highlight-parentheses-highlight ((nil (:weight ultra-bold))) t))
-)
